@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('team_user_codes', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->string('code', 10)->unique();
+            $table->boolean('used')->default(false);
+            $table->foreignId('team_id')->constrained('teams');
+            $table->foreignId('user_id')->nullable()->constrained('users');
             $table->timestamps();
         });
     }
