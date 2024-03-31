@@ -30,7 +30,6 @@ class UserDeviceController extends ApiController
                 return response()->json(['message' => 'Device already registered',], Response::HTTP_CONFLICT);
             }
 
-
             $user->devices()->create(['expo_token' => $request->expo_token, 'last_used_at' => Carbon::now()]);
 
             return $this->handleResponse(['message' => 'Device registered successfully',], Response::HTTP_CREATED);
