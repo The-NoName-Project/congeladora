@@ -4,8 +4,8 @@
     <!-- ---------------------------------- -->
     <div class="brand-logo d-flex align-items-center justify-content-between">
         <a href="{{ Auth::check() ? route('dashboard') : route('home') }}" class="text-nowrap logo-img">
-            <img src="../assets/images/logos/logo-light.svg" class="dark-logo" alt="Logo-Dark" />
-            <img src="../assets/images/logos/logo-dark.svg" class="light-logo" alt="Logo-light" />
+            <img src="{{ asset('logo.png') }}" class="dark-logo" alt="Logo-Dark" width="240rem" />
+            <img src="{{ asset('logo.png') }}" class="light-logo" alt="Logo-light" width="240rem" />
         </a>
         <a href="javascript:void(0)" class="sidebartoggler ms-auto text-decoration-none fs-5 d-block d-xl-none">
             <i class="ti ti-x"></i>

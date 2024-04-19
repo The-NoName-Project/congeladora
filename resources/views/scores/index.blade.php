@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                        <h3 class="text-white text-capitalize ps-3 font-weight-medium ml-lg-4">{{ __('Scores') }}</h3>
+                        <h3 class="text-capitalize ps-3 font-weight-medium ml-lg-4">{{ __('Scores') }}</h3>
                     </div>
                 </div>
                 <div class="card-body mt-auto">
@@ -58,7 +58,7 @@
                 <div class="card">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                            <h3 class="text-white text-capitalize ps-3 font-weight-medium ml-lg-4">{{ __('Scores Feminine') }}</h3>
+                            <h3 class="text-capitalize ps-3 font-weight-medium ml-lg-4">{{ __('Scores Feminine') }}</h3>
                         </div>
                     </div>
                     <div class="card-body mt-auto">

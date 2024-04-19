@@ -28,8 +28,8 @@
             </ul>
 
             <div class="d-block d-lg-none py-3">
-                <img src="../assets/images/logos/logo-light.svg" class="dark-logo" alt="Logo-Dark" />
-                <img src="../assets/images/logos/logo-dark.svg" class="light-logo" alt="Logo-light" />
+                <img src="{{ asset('logo.png') }}" class="dark-logo" alt="Logo-Dark" />
+                <img src="{{ asset('logo.png') }}" class="light-logo" alt="Logo-light" />
             </div>
 
 

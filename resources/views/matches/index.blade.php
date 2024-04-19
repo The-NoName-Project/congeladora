@@ -33,7 +33,7 @@
             <div class="card">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                        <h3 class="text-white text-capitalize ps-3 font-weight-medium ml-lg-4">{{ __('List of Soccer Matches') }}</h3>
+                        <h3 class="text-capitalize ps-3 font-weight-medium ml-lg-4">{{ __('List of Soccer Matches') }}</h3>
                         @if(Auth::user()->rol_id === 1)
                             <div class="float-right justify-content-end align-items-end mr-lg-5">
                                 <a href="{{route('matches.create')}}" class="btn btn-primary"
@@ -138,7 +138,7 @@
             <div class="card">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                        <h3 class="text-white text-capitalize ps-3 font-weight-medium ml-lg-4">{{ __('List of Soccer Matches Played') }}</h3>
+                        <h3 class="text-capitalize ps-3 font-weight-medium ml-lg-4">{{ __('List of Soccer Matches Played') }}</h3>
                     </div>
                 </div>
                 <div class="card-body mt-auto">
