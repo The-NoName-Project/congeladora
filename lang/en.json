@@ -274,6 +274,9 @@
     "The match has started": "El partido ha comenzado",
     "The match has ended": "El partido ha terminado",
     "Phone": "Numero de telefono",
-    "Data of the captain": "Datos del Capitan"
-
+    "Data of the captain": "Datos del Capitan",
+    "Dashboard": "Dashboard",
+    "Table Matches": "Table Matches",
+    "Slug": "Slug",
+    "User Profile": "User Profile"
 }

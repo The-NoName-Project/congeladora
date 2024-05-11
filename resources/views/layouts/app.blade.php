@@ -15,6 +15,7 @@
 <div id="main-wrapper">
     <!-- Sidebar Start -->
     @include('layouts.navigation')
+    @routes
     <!--  Sidebar End -->
     <div class="page-wrapper">
         @include('layouts.sidebar')

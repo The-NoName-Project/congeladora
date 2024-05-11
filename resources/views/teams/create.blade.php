@@ -34,7 +34,7 @@
                                     <label class="col-sm-3 col-form-label" for="slug">{{ __('Slug') }}</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control rounded" name="slug" id="slug"
-                                               placeholder="{{ __('slug') }}" value="{{ old('slug')}}"/>
+                                               placeholder="{{ __('Slug') }}" value="{{ old('slug')}}"/>
                                     </div>
                                     @error('slug')
                                     <div class="text-danger">{{ $message }}</div>

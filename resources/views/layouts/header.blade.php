@@ -111,9 +111,9 @@
                                 </span>
                                             <div class="w-75 d-inline-block v-middle ps-3 ms-1">
                                                 <h5 class="mb-0 mt-1 fs-4 fw-normal">
-                                                    {{ __('Profile') }}
+                                                    {{ __('User Profile') }}
                                                 </h5>
-                                                <span class="fs-3 text-nowrap d-block fw-normal mt-1 text-muted">Account Settings</span>
+{{--                                                <span class="fs-3 text-nowrap d-block fw-normal mt-1 text-muted">Account Settings</span>--}}
                                             </div>
                                         </a>
 
@@ -217,7 +217,7 @@
                                             <img src="../assets/images/svgs/icon-dd-cart.svg" alt="spike-img" class="img-fluid" width="24" height="24" />
                                         </div>
                                         <div class="d-inline-block">
-                                            <h6 class="mb-1 bg-hover-primary">User Profile</h6>
+                                            <h6 class="mb-1 bg-hover-primary">{{ __('User Profile') }}</h6>
                                             <span class="fs-2 d-block fw-normal text-muted">learn more information</span>
                                         </div>
                                     </a>
@@ -737,7 +737,7 @@
                             <div class="dropdown-menu content-dd dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop1">
                                 <div class="profile-dropdown position-relative" data-simplebar>
                                     <div class="d-flex align-items-center justify-content-between pt-3 px-7">
-                                        <h3 class="mb-0 fs-5">User Profile</h3>
+                                        <h3 class="mb-0 fs-5">{{ __('User Profile') }}</h3>
                                         <button type="button" class="border-0 bg-transparent" aria-label="Close">
                                             <iconify-icon icon="solar:close-circle-line-duotone" class="fs-7 text-muted"></iconify-icon>
                                         </button>

@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('/soccer-matches/{id}', [SoccerMatchesController::class, 'show'])->name('matches.show');
+Route::get('/table-matches', [TableMatchesController::class, 'index'])->name('table-matches.index');
 //Route::get('/scores', [TableMatchController::class, 'index'])->name('scores.index');
 
 require __DIR__.'/auth.php';
