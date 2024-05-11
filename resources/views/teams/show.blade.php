@@ -43,9 +43,7 @@
                     </div>
                     <div class="col-md-6" style="padding: 10rem !important;">
                         @if($team->user_id === Auth::user()->id)
-                            @if($team->players->count() > 0)
                                 <a href="{{ route('teams.pdf', $team->id) }}" class="btn btn-danger">{{ __('Codes for my Team') }}</a>
-                            @endif
                         @endif
                         <img src="{{ asset('storage/'.$team->logo)}}" alt="{{$team->name}}" width="400" height="400"/>
                     </div>

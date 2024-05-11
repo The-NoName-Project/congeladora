@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Vinkla\Hashids\Facades\Hashids;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -144,9 +145,12 @@ class TeamsController extends Controller
     {
         try {
             $team = Teams::find($id);
+            TableMatch::where('team_id', $team->id)->delete();
+            TeamUserCodes::where('team_id', $team->id)->delete();
+            Storage::delete('public/'.$team->logo);
             $team->delete();
 
-            return redirect()->route('teams.index');
+            return redirect()->route('teams.index')->with('status', 'Equipo eliminado correctamente');
         } catch (QueryException $e) {
             $errorCode = $e->errorInfo[1];
 
