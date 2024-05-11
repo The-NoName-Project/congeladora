@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Models;
-
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Eloquent;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -61,7 +60,7 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRolId($value)
  * @mixin Eloquent
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens, SoftDeletes;
 

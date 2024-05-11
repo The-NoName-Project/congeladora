@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Vinkla\Hashids\Facades\Hashids;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TeamsController extends Controller
 {
@@ -26,7 +27,8 @@ class TeamsController extends Controller
     {
         $user = Auth::user();
         if ($user->rol_id === 3) {
-            $teams = Teams::where('user_id', $user->id)->get();
+            $teams = Teams::with('capitan', 'players')
+                ->where('user_id', $user->id)->get();
 
             return view('teams.index', compact('teams'));
         }
@@ -163,5 +165,26 @@ class TeamsController extends Controller
         $team = Teams::withTrashed()->find($id);
 
         return response()->json($team);
+    }
+
+    public function pdf($id)
+    {
+        try {
+            $team = Teams::find($id);
+            $codes = TeamUserCodes::where('team_id', $team->id)
+                ->where('used', false)
+                ->get();
+            $team->codes = $codes;
+
+            $pdf = PDF::loadView('teams.pdf', compact('team'));
+
+            return $pdf->stream('team.pdf');
+
+        } catch (\Exception $exception) {
+            Log::error('Error al generar el PDF del equipo correspondiente');
+            Log::error($exception);
+
+            return redirect()->back()->with('statusError', __('Error generating the team PDF'));
+        }
     }
 }

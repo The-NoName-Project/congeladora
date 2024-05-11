@@ -26,7 +26,12 @@
                                 @foreach($team->players as $player)
                                     <div class="card">
                                         <div class="card-body">
-                                            <img src="{{ asset('storage/'.$player->photo)}}" alt="{{$player->name}}" width="100" height="100" class="rounded-full"/>
+                                            @if(!is_null($player->photo))
+                                                <img src="{{ asset('storage/'.$player->photo)}}" alt="{{$player->name}}" width="100" height="100" class="rounded-full"/>
+                                            @else
+                                                <img src="{{ asset('assets/images/default.png') }}" width="45" height="45"
+                                                     class="img-fluid rounded-circle" alt="spike-img"/>
+                                            @endif
                                             <p class="text-2xl font-bold text-capitalize">{{ $player->name }}</p>
                                             <p class="text-gray-500 text-xl font-weight-medium">{{ __('Number') }}: {{ $player->number }}</p>
                                         </div>
@@ -36,7 +41,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" style="padding: 10rem !important;">
+                        @if($team->user_id === Auth::user()->id)
+                                <a href="{{ route('teams.pdf', $team->id) }}" class="btn btn-danger">{{ __('Delete') }}</a>
+                        @endif
                         <img src="{{ asset('storage/'.$team->logo)}}" alt="{{$team->name}}" width="400" height="400"/>
                     </div>
                     </div>

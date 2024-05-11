@@ -29,11 +29,17 @@
             <div class="card">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                        <h3 class="text-capitalize ps-3 font-weight-medium ml-lg-4">{{ __('List of Teams') }}</h3>
+                        <h3 class="text-capitalize ps-3 font-weight-medium ml-lg-4">
+                            @if(Auth::user()->rol_id === 1)
+                                {{ __('List of Teams') }}
+                            @elseif(Auth::user()->rol_id === 3)
+                                {{ __('My Team') }}
+                            @endif
+                        </h3>
                         @if(Auth::user()->rol_id === 1)
                             <div class="justify-content-end align-items-end mr-lg-5">
                                 <a href="{{route('teams.create')}}"
-                                      class="btn btn-outline-light btn-rounded mt-3 mt-md-0 btn-icon-text"
+                                   class="btn btn-outline-light btn-rounded mt-3 mt-md-0 btn-icon-text"
                                    title="Agregar una nuevo Equipo">
                                     <i class="ti ti-plus btn-icon-prepend"></i>
                                 </a>
@@ -42,83 +48,128 @@
                     </div>
                 </div>
                 <div class="card-body mt-auto">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>{{ __('Team') }}</th>
-                                <th>{{ __('Players') }}</th>
-                                <th>{{ __('Actions') }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($teams as $team)
+                    @if(Auth::user()->rol_id === 1)
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
                                 <tr>
-                                    <td class="align-content-center">
-                                        <h4 class="font-weight-medium">{{ $loop->index + 1 }}</h4>
-                                    </td>
-                                    <td class="d-flex align-items-center">
-                                        <img src="{{ asset('storage/'.$team->logo)}}" alt="{{$team->name}}" class="rounded" style="width: 3rem !important; margin-right: 1rem !important;">
-                                        <h2 class="font-weight-medium text-center">{{ $team->name }}</h2>
-                                    </td>
-                                    <td class="align-items-center">
-                                        {{ $team->players->count() }}
-                                    </td>
-                                    <td >
-                                        <a href="{{ route('teams.show', Vinkla\Hashids\Facades\Hashids::encode($team->id)) }}"
-                                           class="btn btn-outline-success">
-                                            <i class="ti ti-eye btn-icon-prepend"></i>
-                                        </a>
-                                        @if(Auth::user()->rol_id === 1)
-{{--                                            <a href="{{ route('teams.edit', Vinkla\Hashids\Facades\Hashids::encode($team->id)) }}"--}}
-{{--                                               class="btn btn-outline-warning">--}}
-{{--                                                <i class="ti ti-edit btn-icon-prepend"></i>--}}
-{{--                                            </a>--}}
-                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteTeam" onclick="deleteTeam({{$team->id}})">
-                                                <i class="ti ti-trash-x btn-icon-prepend"></i>
-                                            </button>
-                                        @endif
-                                    </td>
+                                    <th>#</th>
+                                    <th>{{ __('Team') }}</th>
+                                    <th>{{ __('Players') }}</th>
+                                    <th>{{ __('Actions') }}</th>
                                 </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                @foreach($teams as $team)
+                                    <tr>
+                                        <td class="align-content-center">
+                                            <h4 class="font-weight-medium">{{ $loop->index + 1 }}</h4>
+                                        </td>
+                                        <td class="d-flex align-items-center">
+                                            <img src="{{ asset('storage/'.$team->logo)}}" alt="{{$team->name}}"
+                                                 class="rounded"
+                                                 style="width: 3rem !important; margin-right: 1rem !important;">
+                                            <h2 class="font-weight-medium text-center">{{ $team->name }}</h2>
+                                        </td>
+                                        <td class="align-items-center">
+                                            {{ $team->players->count() }}
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('teams.show', Vinkla\Hashids\Facades\Hashids::encode($team->id)) }}"
+                                               class="btn btn-outline-success">
+                                                <i class="ti ti-eye btn-icon-prepend"></i>
+                                            </a>
+                                            @if(Auth::user()->rol_id === 1)
+                                                {{--                                            <a href="{{ route('teams.edit', Vinkla\Hashids\Facades\Hashids::encode($team->id)) }}"--}}
+                                                {{--                                               class="btn btn-outline-warning">--}}
+                                                {{--                                                <i class="ti ti-edit btn-icon-prepend"></i>--}}
+                                                {{--                                            </a>--}}
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#deleteTeam"
+                                                        onclick="deleteTeam({{$team->id}})">
+                                                    <i class="ti ti-trash-x btn-icon-prepend"></i>
+                                                </button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+                    @if(Auth::user()->rol_id === 3)
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>{{ __('Team') }}</th>
+                                    <th>{{ __('Players') }}</th>
+                                    <th>{{ __('Actions') }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($teams as $team)
+                                    <tr>
+                                        <td class="align-content-center">
+                                            <h4 class="font-weight-medium">{{ $loop->index + 1 }}</h4>
+                                        </td>
+                                        <td class="d-flex align-items-center">
+                                            <img src="{{ asset('storage/'.$team->logo)}}" alt="{{$team->name}}"
+                                                 class="rounded"
+                                                 style="width: 3rem !important; margin-right: 1rem !important;">
+                                            <h2 class="font-weight-medium text-center">{{ $team->name }}</h2>
+                                        </td>
+                                        <td class="align-items-center">
+                                            {{ $team->players->count() }}
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('teams.show', Vinkla\Hashids\Facades\Hashids::encode($team->id)) }}"
+                                               class="btn btn-outline-success">
+                                                <i class="ti ti-eye btn-icon-prepend"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
                 </div>
-                <div class="modal fade" id="deleteTeam" tabindex="-1"
-                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">{{ __('Delete Team') }}</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="container">
-                                    <div class="row justify-content-center">
-                                        <div class="col-md-12">
-                                            <form action="" id="deleteForm" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <p id="banner">{{ __('Are you sure you want to delete this record?') }}</p>
-                                                <div class="modal-footer">
-                                                    <button class="btn btn-secondary" type="button"
-                                                            data-bs-dismiss="modal">{{ __('Cancel')}}
-                                                    </button>
-                                                    <button class="btn btn-danger"
-                                                            type="submit">{{ __('Delete Team') }}</button>
-                                                </div>
-                                            </form>
+                @if(Auth::user()->rol_id === 1)
+                    <div class="modal fade" id="deleteTeam" tabindex="-1"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">{{ __('Delete Team') }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-12">
+                                                <form action="" id="deleteForm" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <p id="banner">{{ __('Are you sure you want to delete this record?') }}</p>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-secondary" type="button"
+                                                                data-bs-dismiss="modal">{{ __('Cancel')}}
+                                                        </button>
+                                                        <button class="btn btn-danger"
+                                                                type="submit">{{ __('Delete Team') }}</button>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
         <script type="application/javascript">

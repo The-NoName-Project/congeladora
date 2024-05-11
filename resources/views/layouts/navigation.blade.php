@@ -4,8 +4,8 @@
     <!-- ---------------------------------- -->
     <div class="brand-logo d-flex align-items-center justify-content-between">
         <a href="{{ Auth::check() ? route('dashboard') : route('home') }}" class="text-nowrap logo-img">
-            <img src="{{ asset('logo.png') }}" class="dark-logo" alt="Logo-Dark" width="240rem" />
-            <img src="{{ asset('logo.png') }}" class="light-logo" alt="Logo-light" width="240rem" />
+            <img src="{{ asset('logo.png') }}" class="dark-logo" alt="Logo-Dark" width="240rem"/>
+            <img src="{{ asset('logo.png') }}" class="light-logo" alt="Logo-light" width="240rem"/>
         </a>
         <a href="javascript:void(0)" class="sidebartoggler ms-auto text-decoration-none fs-5 d-block d-xl-none">
             <i class="ti ti-x"></i>
@@ -25,7 +25,8 @@
                     <span class="hide-menu">{{ __('Dashboard') }}</span>
                 </li>
                 <li class="sidebar-item {{ request()->is('/') ? 'active' : '' }}">
-                    <a class="sidebar-link sidebar-link primary-hover-bg" href="{{ Auth::check() ? route('dashboard') : route('home') }}" aria-expanded="false">
+                    <a class="sidebar-link sidebar-link primary-hover-bg"
+                       href="{{ Auth::check() ? route('dashboard') : route('home') }}" aria-expanded="false">
                 <span class="aside-icon p-2 bg-primary-subtle rounded-1">
                   <iconify-icon icon="solar:screencast-2-line-duotone" class="fs-6"></iconify-icon>
                 </span>
@@ -42,28 +43,33 @@
 
                 @if(Auth::check())
                     <li class="sidebar-item {{ request()->routeIs('teams.*') ? 'active' : '' }}">
-                        <a class="sidebar-link success-hover-bg" href="{{ route('teams.index') }}" aria-expanded="false">
-                <span class="aside-icon p-2 bg-success-subtle rounded-1">
-                  <iconify-icon icon="solar:smart-speaker-minimalistic-line-duotone" class="fs-6"></iconify-icon>
-                </span>
+                        <a class="sidebar-link success-hover-bg" href="{{ route('teams.index') }}"
+                           aria-expanded="false">
+                                <span class="aside-icon p-2 bg-success-subtle rounded-1">
+                                  <iconify-icon icon="solar:smart-speaker-minimalistic-line-duotone" class="fs-6"></iconify-icon>
+                                </span>
                             <span class="hide-menu ps-1">{{ __('Teams') }}</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item {{ request()->routeIs('matches.*') ? 'active' : '' }}">
-                        <a class="sidebar-link warning-hover-bg" href="{{ route('matches.index') }}" aria-expanded="false">
-                <span class="aside-icon p-2 bg-warning-subtle rounded-1">
-                  <iconify-icon icon="solar:football-line-duotone" class="fs-6"></iconify-icon>
-                </span>
-                            <span class="hide-menu ps-1">{{ __('Soccer Matches') }}</span>
-                        </a>
-                    </li>
+                    @if(Auth::user()->rol_id === 1)
+                        <li class="sidebar-item {{ request()->routeIs('matches.*') ? 'active' : '' }}">
+                            <a class="sidebar-link warning-hover-bg" href="{{ route('matches.index') }}"
+                               aria-expanded="false">
+                                    <span class="aside-icon p-2 bg-warning-subtle rounded-1">
+                                      <iconify-icon icon="solar:football-line-duotone" class="fs-6"></iconify-icon>
+                                    </span>
+                                <span class="hide-menu ps-1">{{ __('Soccer Matches') }}</span>
+                            </a>
+                        </li>
+                    @endif
                 @endif
                 <li class="sidebar-item {{ request()->routeIs('table-matches.*') ? 'active' : '' }}">
-                    <a class="sidebar-link danger-hover-bg" href="{{ route('table-matches.index') }}" aria-expanded="false">
-                <span class="aside-icon p-2 bg-danger-subtle rounded-1">
-                  <iconify-icon icon="solar:clipboard-list-line-duotone" class="fs-6"></iconify-icon>
-                </span>
+                    <a class="sidebar-link danger-hover-bg" href="{{ route('table-matches.index') }}"
+                       aria-expanded="false">
+                            <span class="aside-icon p-2 bg-danger-subtle rounded-1">
+                              <iconify-icon icon="solar:clipboard-list-line-duotone" class="fs-6"></iconify-icon>
+                            </span>
                         <span class="hide-menu ps-1">{{ __('Table Matches') }}</span>
                     </a>
                 </li>
@@ -78,7 +84,8 @@
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between gap-3">
                         <div class="d-flex align-items-center gap-3">
-                            <img src="{{ asset('assets/images/default.png') }}" width="45" height="45" class="img-fluid rounded-circle" alt="spike-img" />
+                            <img src="{{ asset('assets/images/default.png') }}" width="45" height="45"
+                                 class="img-fluid rounded-circle" alt="spike-img"/>
                             <div>
                                 <h5 class="mb-1">{{ substr(Auth::user()->name, 0, 5) }}</h5>
                                 <p class="mb-0">{{ Auth::user()->rol()->first()->name }}</p>

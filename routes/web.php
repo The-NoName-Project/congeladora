@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/teams/{id}/edit', [TeamsController::class, 'edit'])->name('teams.edit');
     Route::patch('/teams/{id}/update', [TeamsController::class, 'update'])->name('teams.update');
     Route::delete('/teams/{id}/delete', [TeamsController::class, 'destroy'])->name('teams.delete');
+    Route::get('/teams/{id}/pdf', [TeamsController::class, 'pdf'])->name('teams.pdf');
 
     Route::get('/soccer-matches', [SoccerMatchesController::class, 'index'])->name('matches.index');
     Route::get('/soccer-matches/create', [SoccerMatchesController::class, 'create'])->name('matches.create');
