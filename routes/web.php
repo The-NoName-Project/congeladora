@@ -24,21 +24,21 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/teams', [TeamsController::class, 'index'])->name('teams.index');
-    Route::get('/teams/create', [TeamsController::class, 'create'])->name('teams.create');
-    Route::post('/teams/store', [TeamsController::class, 'store'])->name('teams.store');
+    Route::get('/teams/create', [TeamsController::class, 'create'])->name('teams.create')->middleware('block_user');
+    Route::post('/teams/store', [TeamsController::class, 'store'])->name('teams.store')->middleware('block_user');
     Route::get('/teams/{id}', [TeamsController::class, 'show'])->name('teams.show');
     Route::get('/teams/{id}/json', [TeamsController::class, 'showJson'])->name('teams.json');
-    Route::get('/teams/{id}/edit', [TeamsController::class, 'edit'])->name('teams.edit');
-    Route::patch('/teams/{id}/update', [TeamsController::class, 'update'])->name('teams.update');
+    Route::get('/teams/{id}/edit', [TeamsController::class, 'edit'])->name('teams.edit')->middleware('block_user');
+    Route::patch('/teams/{id}/update', [TeamsController::class, 'update'])->name('teams.update')->middleware('block_user');
     Route::delete('/teams/{id}/delete', [TeamsController::class, 'destroy'])->name('teams.delete');
     Route::get('/teams/{id}/pdf', [TeamsController::class, 'pdf'])->name('teams.pdf');
 
     Route::get('/soccer-matches', [SoccerMatchesController::class, 'index'])->name('matches.index');
-    Route::get('/soccer-matches/create', [SoccerMatchesController::class, 'create'])->name('matches.create');
-    Route::post('/soccer-matches/store', [SoccerMatchesController::class, 'store'])->name('matches.store');
+    Route::get('/soccer-matches/create', [SoccerMatchesController::class, 'create'])->name('matches.create')->middleware('block_user');
+    Route::post('/soccer-matches/store', [SoccerMatchesController::class, 'store'])->name('matches.store')->middleware('block_user');
     Route::get('/soccer-matches/{id}/json', [SoccerMatchesController::class, 'showJson'])->name('matches.json');
-    Route::get('/soccer-matches/{id}/edit', [SoccerMatchesController::class, 'edit'])->name('matches.edit');
-    Route::delete('/soccer-matches/{id}/delete', [SoccerMatchesController::class, 'destroy'])->name('matches.delete');
+    Route::get('/soccer-matches/{id}/edit', [SoccerMatchesController::class, 'edit'])->name('matches.edit')->middleware('block_user');
+    Route::delete('/soccer-matches/{id}/delete', [SoccerMatchesController::class, 'destroy'])->name('matches.delete')->middleware('block_user');
 
     Route::get('/storage/{image}', function ($image) {
         $url = env('APP_URL');
