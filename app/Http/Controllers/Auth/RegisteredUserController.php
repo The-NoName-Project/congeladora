@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\TeamUserCodes;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -31,15 +32,22 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'integer', 'unique:'.User::class],
+            'number' => ['required', 'integer', 'unique:'.User::class],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
+            'phone' => $request->phone,
+            'number' => $request->number,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'rol_id' => 4,
         ]);
+
+        TeamUserCodes::whereCode($request->code)->update(['user_id' => $user->id, 'used' => true]);
 
         event(new Registered($user));
 

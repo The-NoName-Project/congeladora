@@ -2,10 +2,10 @@
     <!-- ---------------------------------- -->
     <!-- Start Vertical Layout Sidebar -->
     <!-- ---------------------------------- -->
-    <div class="brand-logo d-flex align-items-center justify-content-between">
+    <div class="brand-logo d-flex align-items-center justify-content-between logo-img d-flex mb-5 w-100">
         <a href="{{ Auth::check() ? route('dashboard') : route('home') }}" class="text-nowrap logo-img">
-            <img src="{{ asset('logo.png') }}" class="dark-logo" alt="Logo-Dark" width="240rem"/>
-            <img src="{{ asset('logo.png') }}" class="light-logo" alt="Logo-light" width="240rem"/>
+            <img src="{{ asset('logo.png') }}" class="dark-logo w-50" alt="Logo-Dark" style="width: fit-content"/>
+            <img src="{{ asset('logo.png') }}" class="light-logo w-50" alt="Logo-light" style="width: fit-content"/>
         </a>
         <a href="javascript:void(0)" class="sidebartoggler ms-auto text-decoration-none fs-5 d-block d-xl-none">
             <i class="ti ti-x"></i>

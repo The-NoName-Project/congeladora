@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminRoutesBlock
@@ -26,6 +27,7 @@ class AdminRoutesBlock
             return redirect()->route('home');
         } catch (\Throwable $e) {
             Log::error($e->getMessage());
+
             return redirect()->route('home');
         }
     }

@@ -32,7 +32,7 @@
                         <h3 class="text-capitalize ps-3 font-weight-medium ml-lg-4">
                             @if(Auth::user()->rol_id === 1)
                                 {{ __('List of Teams') }}
-                            @elseif(Auth::user()->rol_id === 3)
+                            @elseif(Auth::user()->rol_id === 3 || Auth::user()->rol_id === 4)
                                 {{ __('My Team') }}
                             @endif
                         </h3>
@@ -97,7 +97,7 @@
                             </table>
                         </div>
                     @endif
-                    @if(Auth::user()->rol_id === 3)
+                    @if(Auth::user()->rol_id !== 1)
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>

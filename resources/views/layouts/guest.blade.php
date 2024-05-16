@@ -6,6 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>{{ config('app.name', 'Laravel') }}</title>
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/styles.css') }}">
+        @routes
     </head>
     <body>
     <!-- Preloader -->

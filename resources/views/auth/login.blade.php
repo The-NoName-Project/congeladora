@@ -58,10 +58,10 @@
                         <div class="card-body pt-5">
                             <a href="{{ route('home') }}"
                                class="text-nowrap logo-img text-center d-flex align-items-center justify-content-center mb-5 w-100">
-                                <img src="{{ asset('logo.png') }}" class="light-logo" alt="Logo-Dark" style="width: 25rem !important;"/>
-                                <img src="{{ asset('logo.png') }}" class="dark-logo" alt="Logo-light" style="width: 25rem !important;"/>
+                                <img src="{{ asset('logo.png') }}" class="light-logo w-50" alt="Logo-light" style="width: fit-content" />
+                                <img src="{{ asset('logo.png') }}" class="dark-logo w-50" alt="Logo-light" style="width: fit-content"/>
                             </a>
-                            <h2 class="text-center mb-4">Sign In</h2>
+                            <h2 class="text-center mb-4">{{ __('Sign In') }}</h2>
                             <form method="POST" action="{{ route('login') }}">
                                 @csrf
                                 <div class="mb-3">

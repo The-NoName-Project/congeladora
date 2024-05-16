@@ -32,6 +32,12 @@ class TeamsController extends Controller
                 ->where('user_id', $user->id)->get();
 
             return view('teams.index', compact('teams'));
+        } elseif ($user->rol_id === 4) {
+            $code = TeamUserCodes::where('user_id', $user->id)->first();
+            $teams = Teams::with('capitan', 'players')
+                ->where('id', $code->team_id)->get();
+
+            return view('teams.index', compact('teams'));
         }
 
         $teams = Teams::with('capitan', 'players')->get();
@@ -75,7 +81,7 @@ class TeamsController extends Controller
             //crea 12 codigo para el equipo
             for ($i = 0; $i < 12; $i++) {
                 $code = Str::random(10);
-                TeamUserCodes::create(['code' => $code, 'team_id' => $team->id,]);
+                TeamUserCodes::create(['code' => $code, 'team_id' => $team->id]);
             }
 
             DB::commit();
@@ -99,6 +105,23 @@ class TeamsController extends Controller
         $team = Teams::with('capitan', 'players')->find($id);
 
         return view('teams.show', compact('team'));
+    }
+
+    public function findUserCodeValid(string $code)
+    {
+        try {
+            $code = TeamUserCodes::where('code', $code)->where('used', false)->first();
+
+            if ($code) {
+                return response()->json(['status' => 200, 'code' => $code]);
+            }
+
+            return response()->json(['status' => 'error', 'message' => 'Code not found or already used']);
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
+
+            return response()->json();
+        }
     }
 
     /**

@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/teams/{id}/delete', [TeamsController::class, 'destroy'])->name('teams.delete');
     Route::get('/teams/{id}/pdf', [TeamsController::class, 'pdf'])->name('teams.pdf');
 
+
     Route::get('/soccer-matches', [SoccerMatchesController::class, 'index'])->name('matches.index');
     Route::get('/soccer-matches/create', [SoccerMatchesController::class, 'create'])->name('matches.create')->middleware('block_user');
     Route::post('/soccer-matches/store', [SoccerMatchesController::class, 'store'])->name('matches.store')->middleware('block_user');
@@ -49,6 +50,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/soccer-matches/{id}', [SoccerMatchesController::class, 'show'])->name('matches.show');
 Route::get('/table-matches', [TableMatchesController::class, 'index'])->name('table-matches.index');
+Route::get('/teams/{code}/code', [TeamsController::class, 'findUserCodeValid'])->name('teams.code');
+
 //Route::get('/scores', [TableMatchController::class, 'index'])->name('scores.index');
 
 require __DIR__.'/auth.php';

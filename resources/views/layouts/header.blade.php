@@ -27,9 +27,9 @@
                 </li>
             </ul>
 
-            <div class="d-block d-lg-none py-3">
-                <img src="{{ asset('logo.png') }}" class="dark-logo" alt="Logo-Dark" />
-                <img src="{{ asset('logo.png') }}" class="light-logo" alt="Logo-light" />
+            <div class="d-block d-lg-none py-3 text-nowrap logo-img d-flex mb-5 w-100">
+                <img src="{{ asset('logo.png') }}" class="dark-logo w-50" alt="Logo-Dark" style="width: fit-content"/>
+                <img src="{{ asset('logo.png') }}" class="light-logo w-50" alt="Logo-light" style="width: fit-content;" />
             </div>
 
 
