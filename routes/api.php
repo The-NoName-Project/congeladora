@@ -18,4 +18,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/matches', [SoccerMatchesController::class, 'index']);
     Route::post('/device', [UserDeviceController::class, 'register']);
     Route::get('/teams', [TeamsController::class, 'index']);
+    Route::get('/categories', [CategoriesController::class, 'index']);
 });
