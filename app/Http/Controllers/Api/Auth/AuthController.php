@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\Api\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\TeamUserCodes;
 use App\Models\User;
+use App\Models\UserDevice;
 use App\Models\UserTeam;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -72,6 +73,30 @@ class AuthController extends ApiController
         } catch (Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
+            return $this->handleError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function logout(): JsonResponse
+    {
+        try {
+            $user = Auth::user();
+
+            if (!$user instanceof User) {
+                return $this->handleError('User not found', Response::HTTP_NOT_FOUND);
+            }
+            $user_devices = UserDevice::whereUserId($user->id)->get();
+
+            foreach ($user_devices as $device) {
+                $device->delete();
+            }
+
+            $this->revokeTokens($user);
+
+            return $this->handleResponse([], 'User logged out successfully');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+
             return $this->handleError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

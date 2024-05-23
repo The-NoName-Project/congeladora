@@ -43,4 +43,9 @@ class TeamUserCodes extends Model
     {
         return $this->belongsTo(Teams::class);
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

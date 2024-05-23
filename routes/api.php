@@ -19,4 +19,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/device', [UserDeviceController::class, 'register']);
     Route::get('/teams', [TeamsController::class, 'index']);
     Route::get('/categories', [CategoriesController::class, 'index']);
+
+    Route::post('/logout', [Auth\AuthController::class, 'logout']);
 });

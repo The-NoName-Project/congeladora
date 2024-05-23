@@ -131,9 +131,10 @@ class SoccerMatchesController extends Controller
     public function show($id): View
     {
         $id = Hashids::decode($id)[0];
-        $team = Teams::with('capitan', 'players')->find($id);
+        $match = SoccerMatches::with('home_team', 'away_team', 'referee')
+        ->find($id);
 
-        return view('teams.show', compact('team'));
+        return view('matches.show', compact('match'));
     }
 
     /**
