@@ -3,21 +3,6 @@
     {{ __('Table Matches') }}
 @endsection
 
-@php
-    $user = Auth::user();
-
-    if ($user->rol_id === 4) {
-        $team = \App\Models\UserTeam::where('user_id', $user->id)->first();
-    }
-    elseif ($user->rol_id === 3) {
-        $team = \App\Models\Teams::where('user_id', $user->id)->first();
-    }
-    else {
-        $team = null;
-    }
-
-    @endphp
-
 @section('content')
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card mt-3">
