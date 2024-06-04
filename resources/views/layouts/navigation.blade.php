@@ -62,6 +62,15 @@
                                 <span class="hide-menu ps-1">{{ __('Soccer Matches') }}</span>
                             </a>
                         </li>
+                        <li class="sidebar-item {{ request()->routeIs('schedules.*') ? 'active' : '' }}">
+                            <a class="sidebar-link indigo-hover-bg" href="{{ route('schedules.index') }}"
+                               aria-expanded="false">
+                                    <span class="aside-icon p-2 bg-indigo-subtle rounded-1">
+                                      <iconify-icon icon="solar:calendar-line-duotone" class="fs-6"></iconify-icon>
+                                    </span>
+                                <span class="hide-menu ps-1">{{ __('Schedules') }}</span>
+                            </a>
+                        </li>
                     @endif
                 @endif
                 <li class="sidebar-item {{ request()->routeIs('table-matches.*') ? 'active' : '' }}">

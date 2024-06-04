@@ -83,15 +83,24 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <div class="form-group row">
+                                <div class="form-group row mb-3">
                                     <label class="col-sm-3 col-form-label"
                                            for="match_date">{{ __('Day Of Match') }}</label>
                                     <div class="col-sm-9">
-                                        <input type="datetime-local" name="match_date" id="match_date"
-                                               class="form-control form-control-lg">
+                                        <input type="date" name="match_date" id="match_date"
+                                               class="form-control">
                                         @error('match_date')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
+                                        <div id="date" hidden="hidden"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3" hidden="hidden" id="start">
+                                    <label class="col-sm-3 col-form-label"
+                                           for="starting_time">{{ __('Starting Time') }}</label>
+                                    <div class="col-sm-9">
+                                        <div class="btn-group" data-bs-toggle="buttons" id="starting_time">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -128,6 +137,7 @@
             </div>
         </div>
     </div>
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script type="text/javascript">
         let home_team_id = document.getElementById("home_team_id");
         home_team_id.onchange = function (e) {
@@ -171,5 +181,43 @@
                 }
             })
         }
+        $(document).ready(function () {
+            $('#match_date').change(function () {
+                let date = $(this).val();
+                $.ajax({
+                    'url': route('schedules.show', date),
+                    'type': 'GET',
+                    'success': function (response) {
+                        let container = document.querySelector('#start');
+                        let date = document.querySelector('#date');
+                        date.innerHTML = '';
+                        date.setAttribute('hidden', 'hidden');
+
+                        if (response.length > 0) {
+                            let html = document.querySelector('#starting_time').innerHTML = '';
+                            container.removeAttribute('hidden');
+
+                            response.forEach(function (item) {
+                                html += '<label class="btn bg-primary-subtle text-primary">';
+                                html += '<div class="form-check">'
+                                html += '<input type="checkbox" class="form-check-input" id="checkbox_' + item.id + '" name="match_time" value="' + item.starting_time + '">'
+                                html += '<label class="form-check-label" for="checkbox_' + item.id + '">'
+                                html += '<span class="d-block d-md-none">' + item.starting_time + '</span>'
+                                html += '<span class="d-none d-md-block">' + item.starting_time + '</span>'
+                                html += '</label>'
+                                html += '</div>'
+                                html += '</label>'
+                            });
+                            html += '</div>'
+                            $('#starting_time').html(html);
+                        } else if (response.error) {
+                            container.setAttribute('hidden', 'hidden');
+                            date.removeAttribute('hidden');
+                            $('#date').html('<div class="text-danger">' + response.error + '</div>');
+                        }
+                    }
+                })
+            });
+        });
     </script>
 @endsection

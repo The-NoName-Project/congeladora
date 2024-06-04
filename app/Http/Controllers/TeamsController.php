@@ -64,9 +64,24 @@ class TeamsController extends Controller
         try {
             DB::beginTransaction();
 
-            $request->validate(['name' => ['required', 'string', 'min:3', 'unique:' . Teams::class,], 'logo' => ['required', 'file'], 'slug' => ['required', 'string', 'min:3', 'unique:' . Teams::class], 'name_user' => ['required', 'string', 'max:255'], 'number' => ['required', 'integer'], 'phone' => ['required', 'integer'], 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],]);
+            $request->validate([
+                'name' => ['required', 'string', 'min:3', 'unique:' . Teams::class],
+                'logo' => ['required', 'file'],
+                'slug' => ['required', 'string', 'min:3', 'unique:' . Teams::class],
+                'name_user' => ['required', 'string', 'max:255'],
+                'number' => ['required', 'integer'],
+                'phone' => ['required', 'integer'],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class]
+            ]);
 
-            $user = User::create(['name' => $request->name_user, 'email' => $request->email, 'phone' => $request->phone, 'number' => $request->number, 'password' => Hash::make('12345678'), 'rol_id' => 3]);
+            $user = User::create([
+                'name' => $request->name_user,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'number' => $request->number,
+                'password' => Hash::make('12345678'),
+                'rol_id' => 3
+            ]);
 
             if ($request->file('logo')) {
                 $team = 'team/' . str_replace(" ", "_", $request->name) . '_' . date('Y-m-d') . '_' . $request->file('logo')->getClientOriginalName();
@@ -74,22 +89,36 @@ class TeamsController extends Controller
                 $team = str_replace("public/", "", $team);
             }
 
-            $team = Teams::create(['name' => $request->name, 'slug' => $request->slug, 'logo' => $team, 'user_id' => $user->id, 'category_id' => $request->category_id]);
+            $team = Teams::create([
+                'name' => $request->name,
+                'slug' => $request->slug,
+                'logo' => $team,
+                'user_id' => $user->id,
+                'category_id' => $request->category_id
+            ]);
 
-            TableMatch::create(['team_id' => $team->id, 'matches' => 0, 'wins' => 0, 'losses' => 0, 'draws' => 0, 'points' => 0, 'goals_for' => 0, 'goal_difference' => 0, 'goals_against' => 0, 'category_id' => $team->category_id]);
+            TableMatch::create([
+                'team_id' => $team->id,
+                'matches' => 0,
+                'wins' => 0,
+                'losses' => 0,
+                'draws' => 0,
+                'points' => 0,
+                'goals_for' => 0,
+                'goal_difference' => 0,
+                'goals_against' => 0,
+                'category_id' => $team->category_id
+            ]);
 
-            //crea 12 codigo para el equipo
-            for ($i = 0; $i < 12; $i++) {
-                $code = Str::random(10);
-                TeamUserCodes::create(['code' => $code, 'team_id' => $team->id]);
-            }
+            $code = Str::random(10);
+            TeamUserCodes::create(['code' => $code, 'team_id' => $team->id]);
 
             DB::commit();
 
             return redirect()->route('teams.index')->with('status', __('Team Created Successfully!'));
         } catch (\Exception $exception) {
             DB::rollBack();
-            Log::error('Error al crear el equipo correspondiente');
+            Log::error(__('Error creating the team'));
             Log::error($exception);
 
             return redirect()->back()->withInput()->with('statusError', __('Error creating the team'));

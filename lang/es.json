@@ -285,5 +285,13 @@
     "Sign In": "Iniciar Sesion",
     "Sign Up": "Registrarse",
     "Already have an account?": "¿Ya tienes una cuenta?",
-    "Categories retrieved successfully": "Categorias recuperadas con exito"
+    "Categories retrieved successfully": "Categorias recuperadas con exito",
+    "Schedule": "Horario",
+    "Schedules": "Horarios",
+    "List of Schedules": "Listado de Horarios",
+    "Create Schedule": "Crear Horario",
+    "Edit Schedule": "Editar Horario",
+    "Delete Schedule": "Eliminar Horario",
+    "Opening Time": "Hora de Apertura",
+    "Closing Time": "Hora de Cierre"
 }
