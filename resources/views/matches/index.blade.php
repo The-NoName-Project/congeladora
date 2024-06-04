@@ -159,11 +159,13 @@
                                     <td><p class="font-weight-medium text-xl">{{ $loop->index + 1 }}</p></td>
                                     <td>
                                         <img src="{{ asset('storage/'.$match->home_team->logo)}}"
+                                             class="rounded" style="width: 3rem !important; margin-right: 1rem !important;"
                                              alt="{{$match->home_team->name}}"/>
                                         <h2 class="font-weight-medium">{{ $match->home_team->name }}</h2>
                                     </td>
                                     <td>
                                         <img src="{{ asset('storage/'.$match->away_team->logo)}}"
+                                                class="rounded" style="width: 3rem !important; margin-right: 1rem !important;"
                                              alt="{{$match->away_team->name}}"/>
                                         <h2 class="font-weight-medium">{{ $match->away_team->name }}</h2>
                                     </td>
