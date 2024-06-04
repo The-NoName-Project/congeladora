@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\SoccerMatches;
+use App\Models\TableMatch;
 use App\Models\Teams;
 use App\Models\User;
 use App\Models\UserDevice;
+use App\Models\UserTeam;
 use App\Notifications\Notification;
 use Carbon\Carbon;
 use Exception;
@@ -153,7 +155,13 @@ class SoccerMatchesController extends Controller
         $match = SoccerMatches::with('home_team', 'away_team', 'referee')
         ->find($id);
 
-        return view('matches.show', compact('match'));
+        $team_local_users = UserTeam::with('user')
+            ->whereTeamId($match->home_team_id)->get();
+
+        $team_visit_users = UserTeam::with('user')
+            ->whereTeamId($match->away_team_id)->get();
+
+        return view('matches.show', compact('match', 'team_local_users', 'team_visit_users'));
     }
 
     /**
@@ -179,4 +187,95 @@ class SoccerMatchesController extends Controller
     {
         //
     }
+
+    public function addGoalsTeam(Request $request, $id): RedirectResponse
+    {
+        $request->validate([
+            'player_id_local' => ['exists:' . User::class . ',id'],
+            'player_id_visit' => ['exists:' . User::class . ',id'],
+            'goals_local' => ['integer', 'nullable'],
+            'goals_visit' => ['integer', 'nullable'],
+        ]);
+
+        $id = SoccerMatches::find($id);
+
+        $winnerId = $id->ganador();
+
+        // Si hay un ganador, sumarle 3 puntos
+        if ($winnerId === $id->team_local_id) {
+            $equipoGanador = TableMatch::where('team_id', $winnerId)->first();
+            $equipoGanador->matches += 1;
+            $equipoGanador->points += 3;
+            $equipoGanador->wins += 1;
+            $equipoGanador->goals_team = $equipoGanador->goals_team += ($winnerId === $id->team_local_id) ? $request->goals_local : $request->goals_visit;
+            $equipoGanador->goals_conceded = $equipoGanador->goals_conceded += ($winnerId === $id->team_local_id) ? $request->goals_visit : $request->goals_local;
+            $equipoGanador->save();
+
+            $equipoPerdedor = TableMatch::where('team_id', ($winnerId === $id->team_visit_id) ? $id->team_local_id : $id->team_visit_id)->first();
+            $equipoPerdedor->loses += 1;
+            $equipoPerdedor->matches += 1;
+            $equipoPerdedor->points += 0;
+            $equipoPerdedor->goals_conceded = $equipoPerdedor->goals_conceded += ($winnerId === $id->team_local_id) ? $request->goals_local : $request->goals_visit;
+            $equipoPerdedor->goals_team = $equipoPerdedor->goals_team += ($winnerId === $id->team_visit_id) ? $request->goals_local : $request->goals_visit;
+            $equipoPerdedor->save();
+        }
+        elseif ($winnerId === $id->team_visit_id) {
+            $equipoGanador = TableMatch::where('team_id', $winnerId)->first();
+            $equipoGanador->goals_team = $equipoGanador->goals_team += ($winnerId === $id->team_visit_id) ? $request->goals_visit : $request->goals_local;
+            $equipoGanador->matches += 1;
+            $equipoGanador->points += 3;
+            $equipoGanador->wins += 1;
+            $equipoGanador->goals_conceded = $equipoGanador->goals_conceded += ($winnerId === $id->team_local_id) ? $request->goals_visit : $request->goals_local;
+            $equipoGanador->save();
+
+            $equipoPerdedor = TableMatch::where('team_id', ($winnerId === $id->team_local_id) ? $id->team_visit_id : $id->team_local_id)->first();
+            $equipoPerdedor->goals_team = $equipoPerdedor->goals_team += ($winnerId === $id->team_local_id) ? $request->goals_visit : $request->goals_local;
+            $equipoPerdedor->loses += 1;
+            $equipoPerdedor->matches += 1;
+            $equipoPerdedor->points += 0;
+            $equipoPerdedor->goals_conceded = $equipoPerdedor->goals_conceded += ($winnerId === $id->team_visit_id) ? $request->goals_visit : $request->goals_local;
+            $equipoPerdedor->save();
+        }
+        else {
+            // Si hay un empate, sumarle 1 punto a cada equipo
+            $local = TableMatch::where('team_id', $id->team_local_id)->first();
+            $local->points += 1;
+            $local->draw += 1;
+            $local->goals_team = $local->goals_team += $request->goals_local;
+            $local->goals_conceded = $local->goals_conceded += $request->goals_visit;
+            $local->save();
+
+            $visitante = TableMatch::where('team_id', $id->team_visit_id)->first();
+            $visitante->points += 1;
+            $visitante->draw += 1;
+            $visitante->goals_team = $visitante->goals_team += $request->goals_visit;
+            $visitante->goals_conceded = $visitante->goals_conceded += $request->goals_local;
+            $visitante->save();
+        }
+
+        if ($request->player_id_local || $request->goals_local) {
+            $id->addGoals()->attach($request->player_id_local);
+            $id->team_local_goals = $request->goals_local;
+            $id->save();
+        }
+
+        $id->addGoals()->attach($request->player_id_visit);
+        $id->team_visit_goals = $request->goals_visit;
+        $id->started = true;
+        $id->save();
+
+        $id=Hashids::encode($id->id);
+
+        return redirect()->route('matches.show', $id);
+    }
+
+    public function goals($id): RedirectResponse
+    {
+        $id = SoccerMatches::find($id);
+        $team_local = MatchUser::with('player')->where('soccerMatch_id', $id->id)->where('team_id', $id->team_local_id)->get();
+        $team_visit = MatchUser::with('player')->where('soccerMatch_id', $id->id)->where('team_id', $id->team_visit_id)->get();
+
+        return redirect()->route('matches.show', $id->id);
+    }
+
 }
