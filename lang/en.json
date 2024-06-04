@@ -284,5 +284,13 @@
     "Sign In": "Sign In",
     "Sign Up": "Sign Up",
     "Already have an account?": "Already have an account?",
-    "Categories retrieved successfully": "Categories retrieved successfully"
+    "Categories retrieved successfully": "Categories retrieved successfully",
+    "Schedule": "Schedule",
+    "Schedules": "Schedules",
+    "List of Schedules": "List of Schedules",
+    "Create Schedule": "Create Schedule",
+    "Edit Schedule": "Edit Schedule",
+    "Delete Schedule": "Delete Schedule",
+    "Opening Time": "Opening Time",
+    "Closing Time": "Closing Time"
 }

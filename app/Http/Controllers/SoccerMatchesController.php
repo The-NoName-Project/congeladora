@@ -9,8 +9,11 @@ use App\Models\User;
 use App\Models\UserDevice;
 use App\Notifications\Notification;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Vinkla\Hashids\Facades\Hashids;
@@ -51,78 +54,94 @@ class SoccerMatchesController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'match_date' => ['required', 'date'],
-            'home_team_id' => ['required', 'exists:' . Teams::class . ',id'],
-            'away_team_id' => ['required', 'exists:' . Teams::class . ',id', 'distinct:team_local_id'],
-            'referee_id' => ['required', 'exists:' . User::class . ',id'],
-        ]);
+        try {
+            DB::beginTransaction();
+            $request->validate([
+                'match_date' => ['required', 'date'],
+                'home_team_id' => ['required', 'exists:' . Teams::class . ',id'],
+                'away_team_id' => ['required', 'exists:' . Teams::class . ',id', 'distinct:team_local_id'],
+                'referee_id' => ['required', 'exists:' . User::class . ',id'],
+            ]);
+
+            $date = $request->match_date . ' ' . $request->match_time;
+
+            $request->merge([
+                'match_date' => Carbon::parse($date)->format('Y-m-d H:i:s'),
+            ]);
 
 //        $dayOfMatchExists = SoccerMatches::where('dayOfMatch', $request->dayOfMatch)->exists();
-        $dayOfMatchExists = SoccerMatches::where('match_date', $request->match_date)
-            ->where(function ($query) use ($request) {
-                $query->where('home_team_id', $request->home_team_id)
-                    ->orWhere('away_team_id', $request->home_team_id);
-            })
-            ->where('played', false)
-            ->exists();
+            $dayOfMatchExists = SoccerMatches::where('match_date', $request->match_date)
+                ->where(function ($query) use ($request) {
+                    $query->where('home_team_id', $request->home_team_id)
+                        ->orWhere('away_team_id', $request->home_team_id);
+                })
+                ->where('played', false)
+                ->exists();
 
-        if ($dayOfMatchExists) {
-            return redirect()->back()->withErrors(['error' => __('The game schedule already has a match scheduled for that day.')]);
-        }
+            if ($dayOfMatchExists) {
+                return redirect()->back()->withErrors(['error' => __('The game schedule already has a match scheduled for that day.')]);
+            }
 
-        $teamLocalMatchesExist = SoccerMatches::where('match_date', $request->match_date)
-            ->orWhere('away_team_id', $request->home_team_id)
-            ->where('home_team_id', $request->home_team_id)
-            ->exists();
+            $teamLocalMatchesExist = SoccerMatches::where('match_date', $request->match_date)
+                ->orWhere('away_team_id', $request->home_team_id)
+                ->where('home_team_id', $request->home_team_id)
+                ->exists();
 
-        if ($teamLocalMatchesExist) {
-            return redirect()->back()->withErrors(['error' => __('The local team already has a match scheduled for that day.')]);
-        }
+            if ($teamLocalMatchesExist) {
+                return redirect()->back()->withErrors(['error' => __('The local team already has a match scheduled for that day.')]);
+            }
 
-        $teamVisitMatchesExist = SoccerMatches::where('match_date', $request->match_date)
-            ->orWhere('home_team_id', $request->away_team_id)
-            ->where('away_team_id', $request->away_team_id)
-            ->exists();
+            $teamVisitMatchesExist = SoccerMatches::where('match_date', $request->match_date)
+                ->orWhere('home_team_id', $request->away_team_id)
+                ->where('away_team_id', $request->away_team_id)
+                ->exists();
 
-        if ($teamVisitMatchesExist) {
-            return redirect()->back()->withErrors(['error' => __('The visiting team already has a match scheduled for that day')]);
-        }
+            if ($teamVisitMatchesExist) {
+                return redirect()->back()->withErrors(['error' => __('The visiting team already has a match scheduled for that day')]);
+            }
 
-        if ($request->home_team_id === $request->away_team_id) {
-            return redirect()->back()->withErrors(['error' => __('The visiting team cannot be the same as the local team')]);
-        }
+            if ($request->home_team_id === $request->away_team_id) {
+                return redirect()->back()->withErrors(['error' => __('The visiting team cannot be the same as the local team')]);
+            }
 
 
-        $match = SoccerMatches::create([
-            'match_date' => $request->match_date,
-            'home_team_id' => $request->home_team_id,
-            'away_team_id' => $request->away_team_id,
-            'referee_id' => $request->referee_id,
-            'played' => false,
-        ]);
+            $match = SoccerMatches::create([
+                'match_date' => $request->match_date,
+                'home_team_id' => $request->home_team_id,
+                'away_team_id' => $request->away_team_id,
+                'referee_id' => $request->referee_id,
+                'played' => false,
+            ]);
+
 //
-        $team_local = Teams::find($request->home_team_id);
+            $team_local = Teams::find($request->home_team_id);
 //        $user=$team_local->capitan;
 //        Mail::to($user->email)->send(new SoccerMatchMail($match, $user));
 //
-        $team_visit = Teams::find($request->away_team_id);
+            $team_visit = Teams::find($request->away_team_id);
 //        $capitan=$team_visit->capitan;
 //        Mail::to($capitan->email)->send(new SoccerMatchMail($match, $capitan));
 
-        $notification = new Notification();
-        $devices = UserDevice::all()->pluck('expo_token')->toArray();
+            $notification = new Notification();
+            $devices = UserDevice::all()->pluck('expo_token')->toArray();
 
-        $title = __('New match ').$team_local->name.' vs '.$team_visit->name;
-        $body = __('A new match has been scheduled for the day: ').' '.Carbon::parse($match->match_date)->format('d-m-Y').' '.__('at').' '.Carbon::parse($match->match_date)->format('H:i').' '.__('hours');
+            $title = __('New match ') . $team_local->name . ' vs ' . $team_visit->name;
+            $body = __('A new match has been scheduled for the day: ') . ' ' . Carbon::parse($match->match_date)->format('d-m-Y') . ' ' . __('at') . ' ' . Carbon::parse($match->match_date)->format('H:i') . ' ' . __('hours');
 
-        $notification->notification(
-            devices: $devices,
-            title: $title,
-            body: $body
-        );
+            $notification->notification(
+                devices: $devices,
+                title: $title,
+                body: $body
+            );
 
-        return redirect()->route('matches.index');
+            DB::commit();
+
+            return redirect()->route('matches.index');
+        } catch (Exception $e) {
+            Log::error('An error occurred while creating the schedule', ['error' => $e->getMessage()]);
+
+            return redirect()->route('matches.index')->with('error', 'An error occurred while creating the schedule')->withInput();
+        }
     }
 
     /**

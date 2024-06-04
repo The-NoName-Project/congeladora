@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/teams/{id}/delete', [TeamsController::class, 'destroy'])->name('teams.delete');
     Route::get('/teams/{id}/pdf', [TeamsController::class, 'pdf'])->name('teams.pdf');
 
+    Route::resource('schedules', SchedulesController::class)->except(['edit', 'update'])->middleware('block_user');
 
     Route::get('/soccer-matches', [SoccerMatchesController::class, 'index'])->name('matches.index');
     Route::get('/soccer-matches/create', [SoccerMatchesController::class, 'create'])->name('matches.create')->middleware('block_user');
