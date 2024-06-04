@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @method static \Illuminate\Database\Eloquent\Builder|UserTeam newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserTeam newQuery()
@@ -32,4 +32,14 @@ class UserTeam extends Model
         'team_id',
         'user_id',
     ];
+
+    public function team()
+    {
+        return $this->belongsTo(Teams::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

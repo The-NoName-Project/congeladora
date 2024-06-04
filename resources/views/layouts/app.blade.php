@@ -5,6 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/styles.css') }}">
+    <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
     <title>@yield('title') | {{ env('APP_NAME') }}</title>
 </head>
 <body class="link-sidebar">
@@ -188,8 +189,7 @@
 <script src="{{ asset('assets/js/feather.min.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/js/timepicker.js') }}"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.statically.io/gh/mohamadadithya/calendarify/master/dist/calendarify.min.css">
-<script src="https://cdn.statically.io/gh/mohamadadithya/calendarify/master/dist/calendarify.iife.js"></script>
+<script src="{{ asset('assets/js/select2.min.js') }}"></script>
 
 <!-- solar icons -->
 <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
