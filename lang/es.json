@@ -170,7 +170,7 @@
     "Showing": "Mostrando",
     "Solve": "Resolver",
     "SSL Handshake Failed": "Protocolo de enlace SSL fallido",
-    "Submit": "Entregar",
+    "Submit": "Guardar",
     "Subscribe": "Suscriba",
     "Switch": "Cambiar",
     "Switch To Role": "Cambiar de rol",
@@ -293,5 +293,10 @@
     "Edit Schedule": "Editar Horario",
     "Delete Schedule": "Eliminar Horario",
     "Opening Time": "Hora de Apertura",
-    "Closing Time": "Hora de Cierre"
+    "Closing Time": "Hora de Cierre",
+    "Date Schedule": "Día de Partido",
+    "About Me": "Acerca de mí",
+    "Contact": "Contacto",
+    "Profile": "Perfil",
+    "Update Profile": "Actualizar Perfil"
 }

@@ -12,6 +12,8 @@ use App\Models\UserTeam;
 use App\Notifications\Notification;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -115,11 +117,10 @@ class SoccerMatchesController extends Controller
                 'played' => false,
             ]);
 
-//
             $team_local = Teams::find($request->home_team_id);
 //        $user=$team_local->capitan;
 //        Mail::to($user->email)->send(new SoccerMatchMail($match, $user));
-//
+
             $team_visit = Teams::find($request->away_team_id);
 //        $capitan=$team_visit->capitan;
 //        Mail::to($capitan->email)->send(new SoccerMatchMail($match, $capitan));
@@ -272,10 +273,15 @@ class SoccerMatchesController extends Controller
     public function goals($id): RedirectResponse
     {
         $id = SoccerMatches::find($id);
-        $team_local = MatchUser::with('player')->where('soccerMatch_id', $id->id)->where('team_id', $id->team_local_id)->get();
-        $team_visit = MatchUser::with('player')->where('soccerMatch_id', $id->id)->where('team_id', $id->team_visit_id)->get();
 
         return redirect()->route('matches.show', $id->id);
     }
 
+    public function calendarSoccer():JsonResponse
+    {
+        $matches = SoccerMatches::with('home_team', 'away_team', 'referee')
+            ->get();
+
+        return response()->json($matches);
+    }
 }
