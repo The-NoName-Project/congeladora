@@ -1,3 +1,7 @@
+@php
+        $user = Auth::user();
+@endphp
+
 <header class="topbar sticky-top">
     <div class="with-vertical"><!-- ---------------------------------- -->
         <!-- Start Vertical Layout Header -->
@@ -69,7 +73,9 @@
                             <a class="nav-link position-relative ms-6" href="javascript:void(0)" id="drop1" aria-expanded="false">
                                 <div class="d-flex align-items-center flex-shrink-0">
                                     <div class="user-profile me-sm-3 me-2">
-                                        <img src="{{ asset('assets/images/default.png') }}" width="45" class="rounded-circle" alt="spike-img">
+                                        <img src="{{ asset($user->picture !== null ?
+                                'storage/' . $user->picture :
+                                'assets/images/default.png') }}" width="45" class="rounded-circle" alt="spike-img">
                                     </div>
                                     <span class="d-sm-none d-block"><iconify-icon icon="solar:alt-arrow-down-line-duotone"></iconify-icon></span>
 
@@ -93,7 +99,9 @@
                                     </div>
 
                                     <div class="d-flex align-items-center mx-7 py-9 border-bottom">
-                                        <img src="{{ asset('assets/images/default.png') }}" alt="user" width="90" class="rounded-circle" />
+                                        <img src="{{ asset($user->picture !== null ?
+                                'storage/' . $user->picture :
+                                'assets/images/default.png') }}" alt="user" width="90" class="rounded-circle" />
                                         <div class="ms-4">
                                             <h4 class="mb-0 fs-5 fw-normal">{{ Auth::user()->name }}</h4>
                                             <span class="text-muted"></span>

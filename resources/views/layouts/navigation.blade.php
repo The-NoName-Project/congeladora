@@ -1,3 +1,7 @@
+@php
+    $user = Auth::user();
+@endphp
+
 <aside class="left-sidebar with-vertical">
     <!-- ---------------------------------- -->
     <!-- Start Vertical Layout Sidebar -->
@@ -46,7 +50,8 @@
                         <a class="sidebar-link success-hover-bg" href="{{ route('teams.index') }}"
                            aria-expanded="false">
                                 <span class="aside-icon p-2 bg-success-subtle rounded-1">
-                                  <iconify-icon icon="solar:smart-speaker-minimalistic-line-duotone" class="fs-6"></iconify-icon>
+                                  <iconify-icon icon="solar:smart-speaker-minimalistic-line-duotone"
+                                                class="fs-6"></iconify-icon>
                                 </span>
                             <span class="hide-menu ps-1">{{ __('Teams') }}</span>
                         </a>
@@ -93,7 +98,9 @@
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between gap-3">
                         <div class="d-flex align-items-center gap-3">
-                            <img src="{{ asset('assets/images/default.png') }}" width="45" height="45"
+                            <img src="{{ asset($user->picture !== null ?
+                                'storage/' . $user->picture :
+                                'assets/images/default.png') }}" width="45" height="45"
                                  class="img-fluid rounded-circle" alt="spike-img"/>
                             <div>
                                 <h5 class="mb-1">{{ substr(Auth::user()->name, 0, 5) }}</h5>
