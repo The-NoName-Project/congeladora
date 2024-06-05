@@ -198,7 +198,7 @@
                                             <label for="picture" class="form-label">{{ __('Picture') }}</label>
                                         </div>
                                         <div class="col-md-9">
-                                            <input id="picture" type="file" class="form-control" name="picture">
+                                            <input id="picture_file" type="file" class="form-control" name="picture">
                                         </div>
                                     </div>
                                     <div class="form-group row mt-3 mb-3">
@@ -274,16 +274,17 @@
                     var input = document.createElement('input');
                     input.type = 'file';
                     input.accept = 'image/*';
-                    input.name = 'picture';
+                    input.name = 'picture_file';
                     input.click();
                     input.onchange = function () {
                         var file = input.files[0];
                         var reader = new FileReader();
                         reader.readAsDataURL(file);
                         reader.onload = function () {
-                            $('#picture').value = file;
                             $('.rounded-circle').attr('src', reader.result);
                         };
+                        document.getElementById('picture_file').files = input.files;
+                        $('.form-group').removeAttr('hidden');
                     };
                 });
             });

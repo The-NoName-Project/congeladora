@@ -29,18 +29,16 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         try {
-        if ($request->file('picture')) {
-            $picture = 'pictures/' . str_replace(" ", "_", $request->name) . '_' . date('Y-m-d') . '_' . $request->file('logo')->getClientOriginalName();
-            $picture = $request->file('picture')->storeAs('public', $picture);
-            $picture = str_replace("public/", "", $picture);
-        }
-
-        $request->merge([
-            'picture' => $picture ?? null,
-            'password' => Hash::make($request->password)
-        ]);
 
         $request->user()->fill($request->validated());
+
+        if ($request->file('picture')) {
+            $picture = 'pictures/' . str_replace(" ", "_", $request->name) . '_' . date('Y-m-d') . '_' . $request->file('picture')->getClientOriginalName();
+            $picture = $request->file('picture')->storeAs('public', $picture);
+            $picture = str_replace("public/", "", $picture);
+
+            $request->user()->picture = $picture;
+        }
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;

@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/styles.css') }}">
     <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
     <title>@yield('title') | {{ env('APP_NAME') }}</title>
+    @routes
 </head>
 <body class="link-sidebar">
 <!-- Preloader -->
@@ -16,7 +17,6 @@
 <div id="main-wrapper">
     <!-- Sidebar Start -->
     @include('layouts.navigation')
-    @routes
     <!--  Sidebar End -->
     <div class="page-wrapper">
         @include('layouts.sidebar')
