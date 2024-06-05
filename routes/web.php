@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/soccer-matches/{id}/addFouls', [SoccerMatchesController::class, 'addGoalsFouls'])->name('matches.add_goals');
     Route::post('/soccer-matches/{id}/create-goals', [SoccerMatchesController::class, 'addGoalsTeam'])->name('matches.team_goals');
     Route::get('/soccer-matches/{id}/goals', [SoccerMatchesController::class, 'goals'])->name('matches.goals');
+    Route::get('/calendar', [SoccerMatchesController::class, 'calendarSoccer'])->name('matches.calendar');
 
     Route::get('/storage/{image}', function ($image) {
         $url = env('APP_URL');
