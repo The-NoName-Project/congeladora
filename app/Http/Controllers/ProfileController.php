@@ -29,8 +29,6 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         try {
-
-            dd($request->all());
         if ($request->file('picture')) {
             $picture = 'pictures/' . str_replace(" ", "_", $request->name) . '_' . date('Y-m-d') . '_' . $request->file('logo')->getClientOriginalName();
             $picture = $request->file('picture')->storeAs('public', $picture);
