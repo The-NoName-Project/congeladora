@@ -18,14 +18,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|TeamUserCodes newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TeamUserCodes query()
  * @method static \Illuminate\Database\Eloquent\Builder|TeamUserCodes whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TeamUserCodes whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TeamUserCodes whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TeamUserCodes whereUpdatedAt($value)
- * @property string $code
- * @property int $team_id
- * @property int $used
  * @method static \Illuminate\Database\Eloquent\Builder|TeamUserCodes whereCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TeamUserCodes whereTeamId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TeamUserCodes whereUsed($value)
+ * @property string $code
+ * @property int $team_id
+ * @property int $used
+ * @property int $user_id
  * @mixin \Eloquent
  */
 class TeamUserCodes extends Model

@@ -119,11 +119,15 @@
                                 <div class="d-flex align-items-center mb-9">
                                     <div
                                         class="bg-info-subtle text-info fs-14 round-40 rounded-circle d-flex align-items-center justify-content-center">
-                                        <i class="ti ti-brand-github"></i>
+{{--                                        <i class="ti ti-brand-telegram"></i>--}}
+                                        <img src="{{ asset($team->logo !== null ? 'storage/' . $team->logo : 'assets/images/default.png') }}"
+                                             alt="spike-img"
+                                             class="img-fluid rounded-circle"
+                                             width="50" height="50">
                                     </div>
                                     <div class="ms-6">
-                                        <h6 class="mb-1">{{ $team }}</h6>
-                                        <p class="mb-0">120 members</p>
+                                        <h6 class="mb-1">{{ $team?->name }}</h6>
+                                        <p class="mb-0">{{ $team->slug }}</p>
                                     </div>
                                 </div>
                             </div>

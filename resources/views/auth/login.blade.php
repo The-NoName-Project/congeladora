@@ -76,16 +76,19 @@
                                     <div class="form-check mb-3 mb-md-0">
                                         <input class="form-check-input primary" type="checkbox" name="remember" id="remember_me">
                                         <label class="form-check-label text-dark" for="remember_me">
-                                            {{ __('Remember me') }}
+                                            {{ __('Remember Me') }}
                                         </label>
                                     </div>
-                                    <a class="text-primary fw-medium" href="{{ route('password.request') }}">Forgot Password ?</a>
+{{--                                    <a class="text-primary fw-medium" href="{{ route('password.request') }}">Forgot Password ?</a>--}}
                                 </div>
-                                <button type="submit" class="btn btn-primary w-100 mb-4 rounded-pill">{{ __('Log In') }}</button>
+                                <button type="submit" class="btn btn-primary w-100 mb-4 rounded-pill">{{ __('Login') }}</button>
                                 <div class="d-flex align-items-center justify-content-center">
-                                    <p class="fs-4 mb-0 fw-medium">New to Spike?</p>
-                                    <a class="text-primary fw-medium ms-2" href="../dark/authentication-register.html">Create
-                                        an account</a>
+                                    <p class="fs-4 mb-0 fw-medium">
+                                        {{ __("Don't have an account?")}}
+                                    </p>
+                                    <a class="text-primary fw-medium ms-2" href="{{ route('register') }}">
+                                        {{ __('Create an account') }}
+                                    </a>
                                 </div>
                             </form>
                         </div>

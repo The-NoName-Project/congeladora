@@ -57,16 +57,16 @@
                         </a>
                     </li>
 
-                    @if(Auth::user()->rol_id === 1)
-                        <li class="sidebar-item {{ request()->routeIs('matches.*') ? 'active' : '' }}">
-                            <a class="sidebar-link warning-hover-bg" href="{{ route('matches.index') }}"
-                               aria-expanded="false">
+                    <li class="sidebar-item {{ request()->routeIs('matches.*') ? 'active' : '' }}">
+                        <a class="sidebar-link warning-hover-bg" href="{{ route('matches.index') }}"
+                           aria-expanded="false">
                                     <span class="aside-icon p-2 bg-warning-subtle rounded-1">
                                       <iconify-icon icon="solar:football-line-duotone" class="fs-6"></iconify-icon>
                                     </span>
-                                <span class="hide-menu ps-1">{{ __('Soccer Matches') }}</span>
-                            </a>
-                        </li>
+                            <span class="hide-menu ps-1">{{ __('Soccer Matches') }}</span>
+                        </a>
+                    </li>
+                    @if(Auth::user()->rol_id === 1)
                         <li class="sidebar-item {{ request()->routeIs('schedules.*') ? 'active' : '' }}">
                             <a class="sidebar-link indigo-hover-bg" href="{{ route('schedules.index') }}"
                                aria-expanded="false">
@@ -87,6 +87,36 @@
                         <span class="hide-menu ps-1">{{ __('Table Matches') }}</span>
                     </a>
                 </li>
+                @if(Auth::check())
+                <li class="sidebar-item {{ request()->routeIs('profile.*') ? 'active' : '' }}">
+                    <a class="sidebar-link secondary-hover-bg" href="{{ route('profile.edit') }}"
+                       aria-expanded="false">
+                            <span class="aside-icon p-2 bg-secondary-subtle rounded-1">
+                              <iconify-icon icon="solar:user-circle-broken" class="fs-6"></iconify-icon>
+                            </span>
+                        <span class="hide-menu ps-1">{{ __('Profile') }}</span>
+                    </a>
+                </li>
+                @endif
+                @if(! Auth::check())
+                    <li class="sidebar-item {{ request()->routeIs('matches.*') ? 'active' : '' }}">
+                        <a class="sidebar-link warning-hover-bg" href="{{ route('matches.index') }}"
+                           aria-expanded="false">
+                                    <span class="aside-icon p-2 bg-warning-subtle rounded-1">
+                                      <iconify-icon icon="solar:football-line-duotone" class="fs-6"></iconify-icon>
+                                    </span>
+                            <span class="hide-menu ps-1">{{ __('Soccer Matches') }}</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item {{ request()->routeIs('login') ? 'active' : '' }}">
+                        <a class="sidebar-link info-hover-bg" href="{{ route('login') }}" aria-expanded="false">
+                            <span class="aside-icon p-2 bg-info-subtle rounded-1">
+                                <iconify-icon icon="solar:login-3-bold" class="fs-6"></iconify-icon>
+                            </span>
+                            <span class="hide-menu ps-1">{{ __('Login') }}</span>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </nav>
         <!-- End Sidebar navigation -->
