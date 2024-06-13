@@ -220,7 +220,7 @@
     "Welcome": "Bienvenido",
     "Create Team": "Crear Equipo",
     "Category": "Categoria",
-    "Team Created Successfully!": "Equipo creado Correctamente!",
+    "Team Created Successfully!": "¡Equipo creado Correctamente!",
     "Players": "Jugadores",
     "Edit Team": "Editar Equipo",
     "Are you sure you want to delete this record?": "¿Estas seguro de eliminar este registro?",
@@ -281,8 +281,8 @@
     "Email": "Correo Electronico",
     "User Profile": "Perfil de Usuario",
     "My Team": "Mi Equipo",
-    "Codes for my Team": "Codigos de mi Equipo",
-    "Sign In": "Iniciar Sesion",
+    "Codes for my Team": "Codigo de mi Equipo",
+    "Sign In": "Iniciar Sesión",
     "Sign Up": "Registrarse",
     "Already have an account?": "¿Ya tienes una cuenta?",
     "Categories retrieved successfully": "Categorias recuperadas con exito",
@@ -298,5 +298,12 @@
     "About Me": "Acerca de mí",
     "Contact": "Contacto",
     "Profile": "Perfil",
-    "Update Profile": "Actualizar Perfil"
+    "Update Profile": "Actualizar Perfil",
+    "Password": "Contraseña",
+    "Confirm Password": "Confirmar Contraseña",
+    "Code for join to my team": "Codigo para unirse a mi equipo",
+    "Don't have an account?": "¿No tienes una cuenta?",
+    "Remember Me": "Mantener la sesión iniciada",
+    "Create an account": "Crear una cuenta",
+    "Verify Code": "Verificar Codigo de Invitación"
 }

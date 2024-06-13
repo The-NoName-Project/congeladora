@@ -36,7 +36,7 @@
                                 <input type="text" class="form-control" id="code_team" name="code"
                                 value="{{ old('code') }}" hidden autofocus>
                                 <div class="mb-3">
-                                    <label for="exampleInputEmail1" class="form-label">{{ __('Name') }}</label>
+                                    <label for="exampleInputEmail1" class="form-label">{{ __('Full Name') }}</label>
                                     <input type="text" class="form-control" id="name" name="name"
                                            value="{{ old('name') }}" required autofocus>
                                 </div>
