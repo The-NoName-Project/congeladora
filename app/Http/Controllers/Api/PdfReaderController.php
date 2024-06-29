@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Spatie\PdfToText\Pdf;
 use Exception;
 
@@ -30,11 +31,12 @@ class PdfReaderController extends ApiController
 
             $pdf_route = storage_path('app/public/' . $pdf);
 
-            $data_extracted[] = [];
-            $data_extracted['data'] = Pdf::getText($pdf_route);
+            $data_extracted['text'] = Pdf::getText($pdf_route);
             $data_extracted['pdf'] = $pdf;
             $data_extracted['name'] = $request->file('pdf')->getClientOriginalName();
             $data_extracted['size'] = $request->file('pdf')->getSize();
+
+            Storage::delete('public/' . $pdf);
 
             return $this->handleResponse(
                 data: $data_extracted,
