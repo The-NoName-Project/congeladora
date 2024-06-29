@@ -22,3 +22,5 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [Auth\AuthController::class, 'logout']);
 });
+
+Route::post('/pdf', [PdfReaderController::class, 'getDataPdf']);
