@@ -59,7 +59,7 @@ class Teams extends Model
 
     public function players(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'team_user_codes', 'team_id', 'user_id');
+        return $this->belongsToMany(User::class, 'user_teams', 'team_id', 'user_id');
     }
 
     public function category(): BelongsTo

@@ -136,6 +136,7 @@
                 </div>
                 <div class="col-lg-8">
                     <div class="row">
+                    @if(Auth::user()->rol_id === 3 || Auth::user()->rol_id === 4)
                         <div class="col-md-4">
                             <div class="card">
                                 <div class="card-body p-4">
@@ -177,13 +178,14 @@
                                             <i class="ti ti-id"></i>
                                         </div>
                                         <div class="ms-6">
-                                            <h6 class="mb-1 fs-6">$780</h6>
-                                            <p class="mb-0">Sales</p>
+                                            <h6 class="mb-1 fs-6"></h6>
+                                            <p class="mb-0"></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
                     <div class="card">
                         <div class="card-body p-4">
@@ -191,7 +193,7 @@
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link shadow-none active" data-bs-toggle="tab" href="#feeds" role="tab"
                                        aria-selected="true" tabindex="-1">
-                                        <span>Feeds</span>
+                                        <span>{{ __('Profile') }}</span>
                                     </a>
                                 </li>
                             </ul>

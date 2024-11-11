@@ -305,5 +305,9 @@
     "Don't have an account?": "¿No tienes una cuenta?",
     "Remember Me": "Mantener la sesión iniciada",
     "Create an account": "Crear una cuenta",
-    "Verify Code": "Verificar Codigo de Invitación"
+    "Verify Code": "Verificar Codigo de Invitación",
+    "Name": "Nombre",
+    "No schedules found for this day": "No se encontraron horarios para el día de hoy",
+    "Goals": "Goles",
+    "Fouls": "Faltas"
 }

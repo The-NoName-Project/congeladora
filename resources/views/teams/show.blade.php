@@ -18,9 +18,6 @@ use App\Models\TeamUserCodes;
             $team = Teams::whereUserId($user->id)->first();
             $code = TeamUserCodes::whereTeamId($team?->id)->first()?->code;
 
-    } else {
-            $team = null;
-            $code = null;
     }
 
 @endphp
@@ -33,18 +30,19 @@ use App\Models\TeamUserCodes;
                 </div>
                 <div class="card-body mt-auto">
                     <div class="row">
-                        <div class="col-md-5 m-2">
+                        <div class="col-md-5 m-2 mt-2">
                             <h1 class="font-weight-medium">{{ __('Team') }}: {{$team->name}}</h1>
                             <h3 class="font-weight-light ">Capitan: {{ $team->capitan->name }}</h3>
 
                             <div class="card mt-5">
                                 <div class="p-0 position-relative mt-n4 mx-3">
                                     <div class="rounded pt-4 pb-3">
-                                        <h3 class="text-capitalize ps-3 font-weight-medium text-center">{{ __('Players') }}</h3>
+                                        <h3 class="text-capitalize ps-3 font-weight-medium text-center">{{ __('Players') }} {{ count($team->players) }}</h3>
                                     </div>
                                 </div>
                                 <div class="card-body mt-auto">
                                     <div class="row">
+                                    @if($team->players !== 0)
                                         @foreach($team->players as $player)
                                             <div class="card">
                                                 <div class="card-body">
@@ -63,13 +61,14 @@ use App\Models\TeamUserCodes;
                                                 </div>
                                             </div>
                                         @endforeach
+                                   @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6" style="padding: 10rem !important;">
+                        <div class="col-md-6">
                             @if($team->user_id === Auth::user()->id)
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-danger mt-5" data-bs-toggle="modal"
                                         data-bs-target="#exampleModal">
                                     {{ __('Codes for my Team') }} <i class="ti ti-key"></i>
                                 </button>
@@ -85,7 +84,11 @@ use App\Models\TeamUserCodes;
                                             </div>
                                             <div class="modal-body">
                                                 <h3 class="text-center">{{ __('Code for join to my team') }}</h3>
-                                                <h1 class="text-center">{{ $code }}</h1>
+                                                <h1 class="text-center" id="code_team">{{ $code }}</h1>
+                                                <button type="button" class="btn btn-primary" onclick="copyToClipboard()"
+                                                        data-bs-dismiss="modal">
+                                                    {{ __('Copy to clipboard') }}
+                                                </button>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -97,12 +100,22 @@ use App\Models\TeamUserCodes;
                                 </div>
 
                             @endif
-                            <img src="{{ asset('storage/'.$team->logo)}}" alt="{{$team->name}}" width="400"
-                                 height="400" class="rounded-2 p-2"/>
+                            <img src="{{ asset('storage/'.$team->logo)}}" alt="{{$team->name}}" class="rounded-2 p-2 card-img"/>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        function copyToClipboard() {
+            const copyText = document.getElementById("code_team");
+            let copyTextarea = document.createElement("textarea");
+            copyTextarea.value = copyText.textContent;
+            document.body.appendChild(copyTextarea);
+            copyTextarea.select();
+            document.execCommand("copy");
+            copyTextarea.remove();
+        }
+    </script>
 @endsection

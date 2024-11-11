@@ -84,7 +84,7 @@ class SchedulesController extends Controller
         $schedules_times = Schedules::where('date', $weekday)->first();
 
         if ($schedules_times === null) {
-            return response()->json(['error' => 'No schedules found for this day']);
+            return response()->json(['error' => __('No schedules found for this day')]);
         }
 
         $times = [];
@@ -98,8 +98,8 @@ class SchedulesController extends Controller
 
         while($i < count($period) - 1) {
             $times[] = [
-                'starting_time' => $period[$i]->format('H:i'),
-                'ending_time' => $period[$i + 1]->format('H:i')
+                'starting_time' => $period[$i]->format('h:i A'),
+                'ending_time' => $period[$i + 1]->format('h:i A')
             ];
 
             $i++;

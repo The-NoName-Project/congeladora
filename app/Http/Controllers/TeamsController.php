@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\TableMatch;
 use App\Models\Teams;
-use App\Models\TeamUserCodes;
+use App\Models\UserTeam;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
@@ -33,7 +33,7 @@ class TeamsController extends Controller
 
             return view('teams.index', compact('teams'));
         } elseif ($user->rol_id === 4) {
-            $code = TeamUserCodes::where('user_id', $user->id)->first();
+            $code = UserTeam::where('user_id', $user->id)->first();
             $teams = Teams::with('capitan', 'players')
                 ->where('id', $code->team_id)->get();
 
