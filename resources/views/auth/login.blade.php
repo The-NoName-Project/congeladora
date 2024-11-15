@@ -68,9 +68,14 @@
                                     <label for="exampleInputEmail1" class="form-label">{{ __('Email') }}</label>
                                     <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="email" aria-describedby="emailHelp">
                                 </div>
-                                <div class="mb-4">
+                                <div class="mb-3">
                                     <label for="exampleInputPassword1" class="form-label">{{ __('Password') }}</label>
-                                    <input type="password" class="form-control" id="password" name="password" required autocomplete="current-password">
+                                    <div class="input-group mb-3">
+                                        <input type="password" class="form-control" id="password" name="password" required autocomplete="current-password">
+                                        <button class="btn bg-info-subtle text-info" type="button" onclick="showPassword()" id="password_change">
+                                            <i data-feather="eye" class="fill-white feather-sm" id="eye"></i>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="d-md-flex align-items-center justify-content-between mb-4">
                                     <div class="form-check mb-3 mb-md-0">
@@ -287,4 +292,19 @@
         </div>
         <div class="dark-transparent sidebartoggler"></div>
     </div>
+    <script>
+        function showPassword() {
+            let password = document.getElementById("password");
+            let eye = document.getElementById("password_change");
+            let off = "<i data-feather='eye-off' class='ti ti-eye-off fill-white feather-sm'></i>";
+            let on = "<i data-feather='eye' class='ti ti-eye fill-white feather-sm'></i>";
+            if (password.type === "password") {
+                password.type = "text";
+                eye.innerHTML = off;
+            } else {
+                password.type = "password";
+                eye.innerHTML = on;
+            }
+        }
+    </script>
 @endsection

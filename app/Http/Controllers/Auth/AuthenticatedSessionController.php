@@ -28,7 +28,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        # verifica si la contraseña del usuario sea diferente a 12345678 que es la contraseña por defecto
+        if($request->password === '12345678'){
+            return redirect()->intended(route('dashboard', absolute: false))->with('warning', 'The password is the default password.');
+        }
+
+        return redirect()->intended(route('dashboard', absolute: false))->with('success', 'You are now logged in.');
     }
 
     /**

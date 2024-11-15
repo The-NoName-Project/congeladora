@@ -85,10 +85,25 @@ use App\Models\TeamUserCodes;
                                             <div class="modal-body">
                                                 <h3 class="text-center">{{ __('Code for join to my team') }}</h3>
                                                 <h1 class="text-center" id="code_team">{{ $code }}</h1>
-                                                <button type="button" class="btn btn-primary" onclick="copyToClipboard()"
-                                                        data-bs-dismiss="modal">
-                                                    {{ __('Copy to clipboard') }}
-                                                </button>
+                                                <div class="d-flex justify-content-center">
+                                                    <h5 class="text-center text-primary-subtle mr-5">{{ __('Share') }}</h5>
+                                                    <div class="d-flex justify-content-center">
+                                                    <a type="button" onclick="copyToClipboard()"
+                                                            data-bs-dismiss="modal"
+                                                            class="rounded-circle p-2 bg-primary-subtle">
+                                                        <iconify-icon icon="cuida:clipboard-outline"></iconify-icon>
+                                                    </a>
+
+                                                    <a type="button" data-sharer="whatsapp"
+                                                       data-title="{{ __('Code for join to my team') }} *{{ $code }}*"
+                                                       data-url="{{ route('login') }}"
+                                                       data-bs-dismiss="modal"
+                                                       class="rounded-circle p-2 bg-primary-subtle">
+                                                        <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+                                                    </a>
+
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

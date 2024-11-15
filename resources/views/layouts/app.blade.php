@@ -7,9 +7,11 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/styles.css') }}">
     <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
     <title>@yield('title') | {{ env('APP_NAME') }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="{{ asset('assets/images/logo.png') }}">
     <!-- Lang indicator -->
     <link rel="alternate" hreflang="es" href="https://congeladora.tech/" />
-
     @routes
 </head>
 <body class="link-sidebar">
