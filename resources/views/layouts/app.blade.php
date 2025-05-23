@@ -16,7 +16,7 @@
 </head>
 <body class="link-sidebar">
 <!-- Preloader -->
-<div class="preloader">
+<div class="preloader" style="background-color: #1f314c">
     <img src="{{ asset('assets/images/loader.svg') }}" alt="loader" class="lds-ripple img-fluid" />
 </div>
 <div id="main-wrapper">

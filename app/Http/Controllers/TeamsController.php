@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendRegisterMailNewTeam;
 use App\Models\Category;
 use App\Models\TableMatch;
 use App\Models\Teams;
+use App\Models\TeamUserCodes;
 use App\Models\UserTeam;
 use App\Models\User;
 use Illuminate\Database\QueryException;
@@ -97,19 +99,8 @@ class TeamsController extends Controller
                 'category_id' => $request->category_id
             ]);
 
-            TableMatch::create([
-                'team_id' => $team->id,
-                'matches' => 0,
-                'wins' => 0,
-                'losses' => 0,
-                'draws' => 0,
-                'points' => 0,
-                'goals_for' => 0,
-                'goal_difference' => 0,
-                'goals_against' => 0,
-                'category_id' => $team->category_id
-            ]);
-
+            Log::info("init second plane process");
+            SendRegisterMailNewTeam::dispatch($user->email, $user->password, $team);
             $code = Str::random(10);
             TeamUserCodes::create(['code' => $code, 'team_id' => $team->id]);
 
