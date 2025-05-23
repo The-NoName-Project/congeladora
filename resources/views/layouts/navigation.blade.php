@@ -100,7 +100,7 @@
                 @endif
                 @if(! Auth::check())
                     <li class="sidebar-item {{ request()->routeIs('matches.*') ? 'active' : '' }}">
-                        <a class="sidebar-link warning-hover-bg" href="{{ route('matches.index') }}"
+                        <a class="sidebar-link warning-hover-bg" href="{{ route('matches-without.index') }}"
                            aria-expanded="false">
                                     <span class="aside-icon p-2 bg-warning-subtle rounded-1">
                                       <iconify-icon icon="solar:football-line-duotone" class="fs-6"></iconify-icon>

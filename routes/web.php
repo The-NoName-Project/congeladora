@@ -46,7 +46,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/soccer-matches/{id}/addFouls', [SoccerMatchesController::class, 'addGoalsFouls'])->name('matches.add_goals');
     Route::post('/soccer-matches/{id}/create-goals', [SoccerMatchesController::class, 'addGoalsTeam'])->name('matches.team_goals');
     Route::get('/soccer-matches/{id}/goals', [SoccerMatchesController::class, 'goals'])->name('matches.goals');
-    Route::get('/calendar', [SoccerMatchesController::class, 'calendarSoccer'])->name('matches.calendar');
 
     Route::get('/storage/{image}', function ($image) {
         $url = env('APP_URL');
@@ -57,7 +56,9 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/soccer-matches/{id}', [SoccerMatchesController::class, 'show'])->name('matches.show');
 Route::get('/table-matches', [TableMatchesController::class, 'index'])->name('table-matches.index');
+Route::get('/matches', [SoccerMatchesController::class, 'index'])->name('matches-without.index');
 Route::get('/teams/{code}/code', [TeamsController::class, 'findUserCodeValid'])->name('teams.code');
+Route::get('/calendar', [SoccerMatchesController::class, 'calendarSoccer'])->name('matches.calendar');
 
 //Route::get('/scores', [TableMatchController::class, 'index'])->name('scores.index');
 

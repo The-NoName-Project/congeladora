@@ -12,13 +12,15 @@ class TableMatchesController extends Controller
             ->orderBy('points', 'DESC')
             ->orderBy('matches', 'DESC')
             ->where('category_id', 1)
-            ->get();
+            ->get()
+            ->filter(fn($match) => $match->team !== null);
 
         $scoresFeminine = TableMatch::with('team')
             ->orderBy('points', 'DESC')
             ->orderBy('matches', 'DESC')
             ->where('category_id', 2)
-            ->get();
+            ->get()
+            ->filter(fn($match) => $match->team !== null);
 
         return view('table-match.index', compact('scores', 'scoresFeminine'));
     }
