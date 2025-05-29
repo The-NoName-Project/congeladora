@@ -14,7 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'block_user' => \App\Http\Middleware\AdminRoutesBlock::class
+            'block_user' => \App\Http\Middleware\AdminRoutesBlock::class,
+            'set_language' => \App\Http\Middleware\SetLanguageForUser::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         let calendarEvent = {
             id: event.id,
             title: event.home_team.name + " vs " + event.away_team.name,
-            start: event.match_date,
+            start: event.match_date.slice(0, 10),
             extendedProps: {calendar: "Success"},
         };
         calendarEventsList.push(calendarEvent);
@@ -88,6 +88,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     let calendarEventClick = function (info) {
         let eventObj = info.event;
 
+        let $date;
         if (eventObj.url) {
             window.open(eventObj.url);
 
@@ -125,7 +126,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             return ["event-fc-color fc-bg-" + getColorValue];
         },
         eventClick: calendarEventClick,
-        locale: "es"
+        //hace que el locale sea el del usuario que se guarda en la session del navegador
+        locale: window.App.locale,
     });
 
     /*=====================*/

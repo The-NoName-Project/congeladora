@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\SoccerMatches;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -11,14 +13,16 @@ Route::get('/', function () {
     }
     $soccer = SoccerMatches::with('home_team', 'away_team', 'referee')->thisWeek()->where('played', false)->get();
     return view('welcome', compact('soccer'));
-})->name('home');
+})->name('home')->middleware('set_language');
 
 Route::get('/dashboard', function () {
     $soccer = SoccerMatches::with('home_team', 'away_team', 'referee')->thisWeek()->where('played', false)->get();
-    return view('dashboard', compact('soccer'));
-})->middleware(['auth', 'verified'])->name('dashboard');
+    $played_games = SoccerMatches::with('home_team', 'away_team', 'referee')->thisWeek()->where('played', true)->get();
+    return view('dashboard', compact('soccer', 'played_games'));
 
-Route::middleware('auth')->group(function () {
+})->middleware(['auth', 'verified', 'set_language'])->name('dashboard');
+
+Route::middleware(['auth', 'set_language'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -59,6 +63,19 @@ Route::get('/table-matches', [TableMatchesController::class, 'index'])->name('ta
 Route::get('/matches', [SoccerMatchesController::class, 'index'])->name('matches-without.index');
 Route::get('/teams/{code}/code', [TeamsController::class, 'findUserCodeValid'])->name('teams.code');
 Route::get('/calendar', [SoccerMatchesController::class, 'calendarSoccer'])->name('matches.calendar');
+
+Route::get('/language/{locale}', function (string $locale) {
+    $availableLocales = ['en', 'es']; // Agrega los que necesites
+
+    if (in_array($locale, $availableLocales)) {
+        Session::put('locale', $locale);
+    }
+
+    $locale = Session::get('locale', config('app.locale'));
+    App::setLocale($locale);
+
+    return redirect()->route('home');
+})->name('change-language');
 
 //Route::get('/scores', [TableMatchController::class, 'index'])->name('scores.index');
 
