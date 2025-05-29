@@ -11,10 +11,11 @@
         "barryvdh/laravel-ide-helper": "^3.0",
         "guzzlehttp/guzzle": "^7.8",
         "laravel-lang/locales": "^2.6",
-        "laravel/framework": "^11.0",
+        "laravel/framework": "^11.45.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "opcodesio/log-viewer": "^3.6",
+        "predis/predis": "^3.0",
         "spatie/pdf-to-text": "^1.52",
         "tightenco/ziggy": "^2.1",
         "vinkla/hashids": "^12.0"

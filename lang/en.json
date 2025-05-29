@@ -308,5 +308,8 @@
     "Name": "Name",
     "No schedules found for this day": "No schedules found for this day",
     "Goals": "Goals",
-    "Fouls": "Fouls"
+    "Fouls": "Fouls",
+    "Starting Time": "Starting Time",
+    "Match Date": "Match Date",
+    "Language": "Language"
 }

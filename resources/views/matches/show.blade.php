@@ -48,7 +48,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @if(Auth::check() &&Auth::user()->role_id != 3 && Auth::user()->role_id != 4)
+                                        @if($match->finished !== 1 && Auth::check() &&Auth::user()->role_id != 3 && Auth::user()->role_id != 4)
                                             <h3>{{ __('Add Goals') }}</h3>
                                             <form method="POST"
                                                   action="{{ route('matches.team_goals', $match->id) }}"
@@ -76,12 +76,12 @@
                                                     </div>
                                                     <div class="form-group row mb-3">
                                                         <label class="col-sm-3 col-form-label"
-                                                               for="goals_local">{{ __('Goals') }}</label>
+                                                               for="home_team_goals">{{ __('Goals') }}</label>
                                                         <div class="col-sm-9">
                                                             <input type="number"
-                                                                   class="form-control" id="goals_local"
-                                                                   name="goals_local">
-                                                            @error('goals_local')
+                                                                   class="form-control" id="home_team_goals"
+                                                                   name="home_team_goals">
+                                                            @error('home_team_goals')
                                                             <div class="text-danger">{{ $message }}</div>
                                                             @enderror
                                                         </div>
@@ -109,12 +109,12 @@
                                                     </div>
                                                     <div class="form-group row mb-3">
                                                         <label class="col-sm-3 col-form-label"
-                                                               for="goals_visit">{{ __('Goals') }}</label>
+                                                               for="away_team_goals">{{ __('Goals') }}</label>
                                                         <div class="col-sm-9">
                                                             <input type="number"
-                                                                   class="form-control" id="goals_visit"
-                                                                   name="goals_visit">
-                                                            @error('goals_visit')
+                                                                   class="form-control" id="away_team_goals"
+                                                                   name="away_team_goals">
+                                                            @error('away_team_goals')
                                                             <div class="text-danger">{{ $message }}</div>
                                                             @enderror
                                                         </div>

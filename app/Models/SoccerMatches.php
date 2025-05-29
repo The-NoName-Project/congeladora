@@ -79,6 +79,7 @@ class SoccerMatches extends Model
 
     public function ganador(): ?int
     {
+        dump($this->home_team_goals, $this->away_team_goals);
         if ($this->home_team_goals > $this->away_team_goals) {
             return $this->home_team_id;
         }

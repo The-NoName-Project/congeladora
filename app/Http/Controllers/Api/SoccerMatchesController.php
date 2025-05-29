@@ -17,6 +17,8 @@ class SoccerMatchesController extends ApiController
             return SoccerMatches::with('home_team', 'away_team', 'referee')->where('played', 0)->get();
         });
 
+        dd($soccer);
+
         $matches = Cache::remember('soccer_matches_played', 60, function () {
             return SoccerMatches::with('home_team', 'away_team', 'referee')->where('played', 1)->get();
         });

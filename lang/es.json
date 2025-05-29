@@ -309,5 +309,8 @@
     "Name": "Nombre",
     "No schedules found for this day": "No se encontraron horarios para el día de hoy",
     "Goals": "Goles",
-    "Fouls": "Faltas"
+    "Fouls": "Faltas",
+    "Starting Time": "Horario de Juego",
+    "Match Date": "Dia de Juego",
+    "Language": "Idioma"
 }

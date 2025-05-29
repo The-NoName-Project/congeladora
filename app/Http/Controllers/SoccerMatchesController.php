@@ -32,11 +32,22 @@ class SoccerMatchesController extends Controller
         $categories = Category::all();
 //        $soccer = SoccerMatches::with('team_local', 'team_visit', 'referee', 'goals')->where('started', 0)->get();
         $soccer = Cache::remember('upcoming_soccer_matches', 60, function () {
-            return SoccerMatches::with('home_team', 'away_team', 'referee')->where('played', 0)->get();
+            $matches_upcoming = SoccerMatches::with('home_team', 'away_team', 'referee')->where('played', 0)->get();
+
+            if ($matches_upcoming->count() < 1) {
+                return null;
+            }
+            return $matches_upcoming;
         });
 
         $matches = Cache::remember('soccer_matches_played', 60, function () {
-            return SoccerMatches::with('home_team', 'away_team', 'referee')->where('played', 1)->get();
+            $matches_played = SoccerMatches::with('home_team', 'away_team', 'referee')->where('played', 1)->get();
+
+            if ($matches_played->count() < 1) {
+                return null;
+            }
+
+            return $matches_played;
         });
 
         return view('matches.index', compact('soccer', 'matches', 'categories'));
@@ -125,17 +136,17 @@ class SoccerMatchesController extends Controller
 //        $capitan=$team_visit->capitan;
 //        Mail::to($capitan->email)->send(new SoccerMatchMail($match, $capitan));
 
-            $notification = new Notification();
-            $devices = UserDevice::all()->pluck('expo_token')->toArray();
-
-            $title = __('New match ') . $team_local->name . ' vs ' . $team_visit->name;
-            $body = __('A new match has been scheduled for the day: ') . ' ' . Carbon::parse($match->match_date)->format('d-m-Y') . ' ' . __('at') . ' ' . Carbon::parse($match->match_date)->format('H:i') . ' ' . __('hours');
-
-            $notification->notification(
-                devices: $devices,
-                title: $title,
-                body: $body
-            );
+//            $notification = new Notification();
+//            $devices = UserDevice::all()->pluck('expo_token')->toArray();
+//
+//            $title = __('New match ') . $team_local->name . ' vs ' . $team_visit->name;
+//            $body = __('A new match has been scheduled for the day: ') . ' ' . Carbon::parse($match->match_date)->format('d-m-Y') . ' ' . __('at') . ' ' . Carbon::parse($match->match_date)->format('H:i') . ' ' . __('hours');
+//
+//            $notification->notification(
+//                devices: $devices,
+//                title: $title,
+//                body: $body
+//            );
 
             DB::commit();
 
@@ -194,75 +205,84 @@ class SoccerMatchesController extends Controller
         $request->validate([
             'player_id_local' => ['exists:' . User::class . ',id'],
             'player_id_visit' => ['exists:' . User::class . ',id'],
-            'goals_local' => ['integer', 'nullable'],
-            'goals_visit' => ['integer', 'nullable'],
+            'home_team_goals' => ['integer', 'nullable'],
+            'away_team_goals' => ['integer', 'nullable'],
         ]);
 
         $id = SoccerMatches::find($id);
+        $id->update([
+            'home_team_goals' => $request->home_team_goals,
+            'away_team_goals' => $request->away_team_goals
+        ]);
 
         $winnerId = $id->ganador();
 
-        // Si hay un ganador, sumarle 3 puntos
-        if ($winnerId === $id->team_local_id) {
-            $equipoGanador = TableMatch::where('team_id', $winnerId)->first();
-            $equipoGanador->matches += 1;
-            $equipoGanador->points += 3;
-            $equipoGanador->wins += 1;
-            $equipoGanador->goals_team = $equipoGanador->goals_team += ($winnerId === $id->team_local_id) ? $request->goals_local : $request->goals_visit;
-            $equipoGanador->goals_conceded = $equipoGanador->goals_conceded += ($winnerId === $id->team_local_id) ? $request->goals_visit : $request->goals_local;
-            $equipoGanador->save();
+        if ($winnerId === null) {
+                // Si hay un empate, sumarle 1 punto a cada equipo
+                $local = TableMatch::where('team_id', $id->team_local_id)->first();
+                $local->points += 1;
+                $local->draw += 1;
+                $local->goals_team = $local->goals_team += $request->home_team_goals;
+                $local->goals_conceded = $local->goals_conceded += $request->away_team_goals;
+                $local->save();
 
-            $equipoPerdedor = TableMatch::where('team_id', ($winnerId === $id->team_visit_id) ? $id->team_local_id : $id->team_visit_id)->first();
-            $equipoPerdedor->loses += 1;
-            $equipoPerdedor->matches += 1;
-            $equipoPerdedor->points += 0;
-            $equipoPerdedor->goals_conceded = $equipoPerdedor->goals_conceded += ($winnerId === $id->team_local_id) ? $request->goals_local : $request->goals_visit;
-            $equipoPerdedor->goals_team = $equipoPerdedor->goals_team += ($winnerId === $id->team_visit_id) ? $request->goals_local : $request->goals_visit;
-            $equipoPerdedor->save();
+                $visitante = TableMatch::where('team_id', $id->team_visit_id)->first();
+                $visitante->points += 1;
+                $visitante->draw += 1;
+                $visitante->goals_team = $visitante->goals_team += $request->away_team_goals;
+                $visitante->goals_conceded = $visitante->goals_conceded += $request->home_team_goals;
+                $visitante->save();
         }
-        elseif ($winnerId === $id->team_visit_id) {
-            $equipoGanador = TableMatch::where('team_id', $winnerId)->first();
-            $equipoGanador->goals_team = $equipoGanador->goals_team += ($winnerId === $id->team_visit_id) ? $request->goals_visit : $request->goals_local;
-            $equipoGanador->matches += 1;
-            $equipoGanador->points += 3;
-            $equipoGanador->wins += 1;
-            $equipoGanador->goals_conceded = $equipoGanador->goals_conceded += ($winnerId === $id->team_local_id) ? $request->goals_visit : $request->goals_local;
-            $equipoGanador->save();
-
-            $equipoPerdedor = TableMatch::where('team_id', ($winnerId === $id->team_local_id) ? $id->team_visit_id : $id->team_local_id)->first();
-            $equipoPerdedor->goals_team = $equipoPerdedor->goals_team += ($winnerId === $id->team_local_id) ? $request->goals_visit : $request->goals_local;
-            $equipoPerdedor->loses += 1;
-            $equipoPerdedor->matches += 1;
-            $equipoPerdedor->points += 0;
-            $equipoPerdedor->goals_conceded = $equipoPerdedor->goals_conceded += ($winnerId === $id->team_visit_id) ? $request->goals_visit : $request->goals_local;
-            $equipoPerdedor->save();
-        }
+            // Si hay un ganador, sumarle 3 puntos
         else {
-            // Si hay un empate, sumarle 1 punto a cada equipo
-            $local = TableMatch::where('team_id', $id->team_local_id)->first();
-            $local->points += 1;
-            $local->draw += 1;
-            $local->goals_team = $local->goals_team += $request->goals_local;
-            $local->goals_conceded = $local->goals_conceded += $request->goals_visit;
-            $local->save();
+            if ($winnerId === $id->team_local_id) {
+                $equipoGanador = TableMatch::where('team_id', $winnerId)->first();
+                $equipoGanador->matches += 1;
+                $equipoGanador->points += 3;
+                $equipoGanador->wins += 1;
+                $equipoGanador->goals_team = $equipoGanador->goals_team += ($winnerId === $id->team_local_id) ? $request->home_team_goals : $request->away_team_goals;
+                $equipoGanador->goals_conceded = $equipoGanador->goals_conceded += ($winnerId === $id->team_local_id) ? $request->away_team_goals : $request->home_team_goals;
+                $equipoGanador->save();
 
-            $visitante = TableMatch::where('team_id', $id->team_visit_id)->first();
-            $visitante->points += 1;
-            $visitante->draw += 1;
-            $visitante->goals_team = $visitante->goals_team += $request->goals_visit;
-            $visitante->goals_conceded = $visitante->goals_conceded += $request->goals_local;
-            $visitante->save();
+                $equipoPerdedor = TableMatch::where('team_id', ($winnerId === $id->team_visit_id) ? $id->team_local_id : $id->team_visit_id)->first();
+                $equipoPerdedor->loses += 1;
+                $equipoPerdedor->matches += 1;
+                $equipoPerdedor->points += 0;
+                $equipoPerdedor->goals_conceded = $equipoPerdedor->goals_conceded += ($winnerId === $id->team_local_id) ? $request->home_team_goals : $request->away_team_goals;
+                $equipoPerdedor->goals_team = $equipoPerdedor->goals_team += ($winnerId === $id->team_visit_id) ? $request->home_team_goals : $request->away_team_goals;
+                $equipoPerdedor->save();
+            }
+            elseif ($winnerId === $id->team_visit_id) {
+                $equipoGanador = TableMatch::where('team_id', $winnerId)->first();
+                $equipoGanador->goals_team = $equipoGanador->goals_team += ($winnerId === $id->team_visit_id) ? $request->away_team_goals : $request->home_team_goals;
+                $equipoGanador->matches += 1;
+                $equipoGanador->points += 3;
+                $equipoGanador->wins += 1;
+                $equipoGanador->goals_conceded = $equipoGanador->goals_conceded += ($winnerId === $id->team_local_id) ? $request->away_team_goals : $request->home_team_goals;
+                $equipoGanador->save();
+
+                $equipoPerdedor = TableMatch::where('team_id', ($winnerId === $id->team_local_id) ? $id->team_visit_id : $id->team_local_id)->first();
+                $equipoPerdedor->goals_team = $equipoPerdedor->goals_team += ($winnerId === $id->team_local_id) ? $request->away_team_goals : $request->home_team_goals;
+                $equipoPerdedor->loses += 1;
+                $equipoPerdedor->matches += 1;
+                $equipoPerdedor->points += 0;
+                $equipoPerdedor->goals_conceded = $equipoPerdedor->goals_conceded += ($winnerId === $id->team_visit_id) ? $request->away_team_goals : $request->home_team_goals;
+                $equipoPerdedor->save();
+            }
         }
 
-        if ($request->player_id_local || $request->goals_local) {
-            $id->addGoals()->attach($request->player_id_local);
-            $id->team_local_goals = $request->goals_local;
-            $id->save();
-        }
-
-        $id->addGoals()->attach($request->player_id_visit);
-        $id->team_visit_goals = $request->goals_visit;
-        $id->started = true;
+//        if ($request->player_id_local || $request->home_team_goals) {
+//            $id->addGoals()->attach($request->player_id_local);
+//            $id->team_local_goals = $request->home_team_goals;
+//            $id->save();
+//        }
+//
+//        if ($request->player_id_local || $request->away_team_goals) {
+//            $id->addGoals()->attach($request->player_id_visit);
+//            $id->team_visit_goals = $request->away_team_goals;
+//        }
+        $id->played = true;
+        $id->finished = true;
         $id->save();
 
         $id=Hashids::encode($id->id);
