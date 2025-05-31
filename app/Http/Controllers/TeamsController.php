@@ -31,7 +31,7 @@ class TeamsController extends Controller
         $user = Auth::user();
         if ($user->rol_id === 3) {
             $teams = Teams::with('capitan', 'players')
-                ->where('user_id', $user->id)->get();
+                ->where('user_id', $user->id)->paginate();
 
             return view('teams.index', compact('teams'));
         } elseif ($user->rol_id === 4) {
@@ -42,7 +42,7 @@ class TeamsController extends Controller
             return view('teams.index', compact('teams'));
         }
 
-        $teams = Teams::with('capitan', 'players')->get();
+        $teams = Teams::with('capitan', 'players')->paginate(20);
 
         return view('teams.index', compact('teams'));
 
@@ -103,6 +103,11 @@ class TeamsController extends Controller
             SendRegisterMailNewTeam::dispatch($user->email, $user->password, $team);
             $code = Str::random(10);
             TeamUserCodes::create(['code' => $code, 'team_id' => $team->id]);
+
+            UserTeam::create([
+                'user_id' => $user->id,
+                'team_id' => $team->id
+            ]);
 
             DB::commit();
 

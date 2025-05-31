@@ -51,6 +51,8 @@ Route::middleware('auth')->group(function () {
         $url = env('APP_URL');
         return $url . '/storage/' . $image;
     })->name('images.show');
+
+    Route::resource('users', UserController::class)->except(['edit', 'update'])->middleware('block_user');
 });
 
 

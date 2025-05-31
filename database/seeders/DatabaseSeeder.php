@@ -4,8 +4,12 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\Rol;
+use App\Models\Teams;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\UserTeam;
+use Database\Factories\TeamsFactory;
+use Database\Factories\UserTeamFactory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 

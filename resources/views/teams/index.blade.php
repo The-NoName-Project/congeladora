@@ -63,7 +63,7 @@
                                 @foreach($teams as $team)
                                     <tr>
                                         <td class="align-content-center">
-                                            <h4 class="font-weight-medium">{{ $loop->index + 1 }}</h4>
+                                            <h4 class="font-weight-medium">{{ $loop->index + $teams->firstItem() }}</h4>
                                         </td>
                                         <td class="d-flex align-items-center">
                                             <img src="{{ asset('storage/'.$team->logo)}}" alt="{{$team->name}}"
@@ -112,7 +112,7 @@
                                 @foreach($teams as $team)
                                     <tr>
                                         <td class="align-content-center">
-                                            <h4 class="font-weight-medium">{{ $loop->index + 1 }}</h4>
+                                            <h4 class="font-weight-medium">{{ $loop->index + $teams->firstItem() }}</h4>
                                         </td>
                                         <td class="d-flex align-items-center">
                                             <img src="{{ asset('storage/'.$team->logo)}}" alt="{{$team->name}}"
@@ -136,6 +136,11 @@
                         </div>
                     @endif
                 </div>
+                @if(Auth::user()->rol_id === 1 || Auth::user()->rol_id === 3)
+                    <div class="card-footer mt-auto">
+                        {{ $teams->links() }}
+                    </div>
+                @endif
                 @if(Auth::user()->rol_id === 1)
                     <div class="modal fade" id="deleteTeam" tabindex="-1"
                          aria-labelledby="exampleModalLabel" aria-hidden="true">

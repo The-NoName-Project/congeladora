@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/styles.css') }}">
     <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
-    <title>@yield('title') | {{ env('APP_NAME') }}</title>
+    <title>@yield('title') | {{ env('APP_NAME', 'Congeladora') }}</title>
     <script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script>
     <!-- favicon -->
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.png') }}">
