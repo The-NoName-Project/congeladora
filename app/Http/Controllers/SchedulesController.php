@@ -81,6 +81,7 @@ class SchedulesController extends Controller
 
         $weekday = $weekday->format('Y-m-d');
 
+
         $schedules_times = Schedules::where('date', $weekday)->first();
 
         if ($schedules_times === null) {
@@ -109,7 +110,7 @@ class SchedulesController extends Controller
         } catch (\Exception $e) {
             Log::error('An error occurred while creating the schedule', ['error' => $e->getMessage()]);
 
-            return redirect()->route('schedules.index')->with('error', 'An error occurred while creating the schedule')->withInput();
+            return response()->noContent();
         }
     }
 
