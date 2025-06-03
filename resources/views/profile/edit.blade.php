@@ -250,7 +250,7 @@
                                             <label for="password" class="form-label">{{ __('Password') }}</label>
                                         </div>
                                         <div class="col-md-9">
-                                            <input id="password" type="password" class="form-control" name="password">
+                                            <input id="password" type="password" class="form-control" name="password" required>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-3 mb-3">
@@ -260,7 +260,7 @@
                                         </div>
                                         <div class="col-md-9">
                                             <input id="password_confirmation" type="password" class="form-control"
-                                                   name="password_confirmation">
+                                                   name="password_confirmation" required>
                                         </div>
                                     </div>
                                     <button type="submit"

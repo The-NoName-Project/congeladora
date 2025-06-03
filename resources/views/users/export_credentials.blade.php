@@ -181,14 +181,14 @@
                     <img src="{{ asset('logo.png') }}" alt="{{ env('APP_NAME') }}"  width="100" style="border-radius: 50%;">
                 </div>
                 <div class="team-logo right-hole card-hole-single">
-                    <img src="{{ asset($player->team->logo) }}" alt="{{ env('APP_NAME') }}"  width="70" style="border-radius: 50%;">
+                    <img src="{{ asset('storage/'.$player->team->logo) }}" alt="{{ env('APP_NAME') }}"  width="70" style="border-radius: 50%;">
                 </div>
                 <div class="card-hole-single left-hole red-color"></div>
                 <div class="card-hole-single right-hole red-color"></div>
                 <div class="middle-slot"></div>
             </div>
             <div class="photo-circle">
-                <img src="{{ asset('assets/images/default.png') }}" alt="Foto">
+                <img src="{{ asset('storage/'.$player->user->picture) }}" alt="Foto">
             </div>
             <div class="content">
                 <div class="employee-name">{{ strtoupper($player->user->name) }}</div>
