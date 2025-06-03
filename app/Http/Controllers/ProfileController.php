@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Services\ImageOptimizerService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,13 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    protected $imageOptimizer;
+
+    public function __construct(ImageOptimizerService $imageOptimizer)
+    {
+        $this->imageOptimizer = $imageOptimizer;
+    }
+
     /**
      * Display the user's profile form.
      */
@@ -33,11 +41,9 @@ class ProfileController extends Controller
         $request->user()->fill($request->validated());
 
         if ($request->file('picture')) {
-            $picture = 'pictures/' . str_replace(" ", "_", $request->name) . '_' . date('Y-m-d') . '_' . $request->file('picture')->getClientOriginalName();
-            $picture = $request->file('picture')->storeAs('public', $picture);
-            $picture = str_replace("public/", "", $picture);
+            $result = $this->imageOptimizer->processUploadedImage($request->file('picture'), 'pictures');
 
-            $request->user()->picture = $picture;
+            $request->user()->picture = $result['credential'] ?? $result['original'];
         }
 
         if ($request->user()->isDirty('email')) {

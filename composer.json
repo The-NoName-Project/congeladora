@@ -10,6 +10,7 @@
         "barryvdh/laravel-dompdf": "^2.1",
         "barryvdh/laravel-ide-helper": "^3.0",
         "guzzlehttp/guzzle": "^7.8",
+        "intervention/image": "^2.7",
         "laravel-lang/locales": "^2.6",
         "laravel/framework": "^11.45.0",
         "laravel/sanctum": "^4.0",
