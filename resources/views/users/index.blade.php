@@ -16,13 +16,12 @@
                     </button>
                 </div>
             @endif
-            @if(session('statusError'))
+            @if(session('warning'))
                 <div class="alert alert-danger alert-dismissible text-dark mb-4" role="alert">
                 <span class="text-sm"> <a href="javascript:" class="alert-link text-dark">Error</a>.
-                    {{ session('statusError') }}.</span>
+                    {{ session('warning') }}.</span>
                     <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
                             aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
             @endif
@@ -32,11 +31,16 @@
                         <h3 class="text-capitalize ps-3 font-weight-medium ml-lg-4">
                             {{ __('List of Players') }}
                         </h3>
-                        <div class="justify-content-end align-items-end mr-lg-5">
-                            <a href="{{route('users.create')}}"
-                               class="btn btn-outline-light btn-rounded mt-3 mt-md-0 btn-icon-text"
-                               title="{{ __('Add a new User') }}">
-                                <i class="ti ti-plus btn-icon-prepend"></i>
+                        <div class="d-flex justify-content-end align-items-end mr-lg-5">
+{{--                            <a href="{{route('users.create')}}"--}}
+{{--                               class="btn btn-outline-light btn-rounded mt-3 mt-md-0 btn-icon-text"--}}
+{{--                               title="{{ __('Add a new User') }}">--}}
+{{--                                <i class="ti ti-plus btn-icon-prepend"></i>--}}
+{{--                            </a>--}}
+                            <a href="{{ route('export.credentials') }}"
+                               class="btn btn-outline-indigo btn-rounded mt-3 mt-md-0 btn-icon-text"
+                               title="{{ __('Export Users') }}">
+                                <i class="ti ti-save-alt btn-icon-prepend"></i>
                             </a>
                         </div>
                     </div>
@@ -78,7 +82,7 @@
                                         <span class="font-weight-medium text-center">{{ $player->team->name }}</span>
                                     </td>
                                     <td>
-                                        <a href="{{ route('teams.show', Vinkla\Hashids\Facades\Hashids::encode($player->user->id)) }}"
+                                        <a href="{{ route('users.show', Vinkla\Hashids\Facades\Hashids::encode($player->user->id)) }}"
                                            class="btn btn-outline-success">
                                             <i class="ti ti-eye btn-icon-prepend"></i>
                                         </a>

@@ -57,6 +57,7 @@ Route::middleware(['auth', 'set_language'])->group(function () {
     })->name('images.show');
 
     Route::resource('users', UserController::class)->except(['edit', 'update'])->middleware('block_user');
+    Route::get('/export/credentials', [UserController::class, 'export_credentials'])->name('export.credentials')->middleware('block_user');
 });
 
 

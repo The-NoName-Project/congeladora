@@ -24,7 +24,7 @@ class TeamsFactory extends Factory
         return [
             'name' => fake()->name(),
             'slug' => fake()->unique()->slug(),
-            'logo' => fake()->imageUrl(),
+            'logo' => Teams::findOrFail(1)->logo,
             'user_id' => User::inRandomOrder()->first()->id,
             'category_id' => 1
         ];
