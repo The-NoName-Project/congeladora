@@ -4,6 +4,7 @@ namespace App\Utils;
 
 use App\Enums\DayOfWeek;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
 
 class DateUtil
 {
@@ -88,9 +89,10 @@ class DateUtil
      */
     public static function translateDateToDayOfWeek(Carbon $date): string
     {
+        $locale = Session::get('locale', config('app.locale'));
         $date=ucfirst($date->dayName);
         $date = self::translateDayOfWeek($date);
-        return Carbon::parse(self::dayOfWeekDates()[$date->name])->locale('es_ES')->translatedFormat('l');
+        return Carbon::parse(self::dayOfWeekDates()[$date->name])->locale($locale)->translatedFormat('l');
     }
 
     public static function values(): array
