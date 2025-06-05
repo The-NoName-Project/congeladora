@@ -37,7 +37,9 @@ Route::middleware(['auth', 'set_language'])->group(function () {
     Route::delete('/teams/{id}/delete', [TeamsController::class, 'destroy'])->name('teams.delete');
     Route::get('/teams/{id}/pdf', [TeamsController::class, 'pdf'])->name('teams.pdf');
 
-    Route::resource('schedules', SchedulesController::class)->except(['edit', 'update'])->middleware('block_user');
+    Route::resource('schedules', SchedulesController::class)->except(['edit', 'update', 'delete'])->middleware('block_user');
+    Route::get('/schedules/{id}/json', [SchedulesController::class, 'showJson'])->name('schedules.json');
+    Route::delete('/schedules/{id}/delete', [SchedulesController::class, 'destroy'])->name('schedules.delete');
 
     Route::get('/soccer-matches', [SoccerMatchesController::class, 'index'])->name('matches.index');
     Route::get('/soccer-matches/create', [SoccerMatchesController::class, 'create'])->name('matches.create')->middleware('block_user');
@@ -77,7 +79,7 @@ Route::get('/language/{locale}', function (string $locale) {
     $locale = Session::get('locale', config('app.locale'));
     App::setLocale($locale);
 
-    return redirect()->route('home');
+    return redirect()->back();
 })->name('change-language');
 
 //Route::get('/scores', [TableMatchController::class, 'index'])->name('scores.index');

@@ -88,14 +88,16 @@ class SchedulesController extends Controller
             return response()->json(['error' => __('No schedules found for this day')]);
         }
 
+        $opening = Carbon::parse($schedules_times->opening_time);
+        $closing = Carbon::parse($schedules_times->closing_time);
+
+        if ($closing->format('H:i:s') === '00:00:00') {
+            $closing->addDay(); // Para cubrir toda la noche hasta medianoche
+        }
+
         $times = [];
         $i = 0;
-        $period = CarbonPeriod::create(
-            $schedules_times->opening_time,
-            1 . 'hour',
-            $schedules_times->closing_time
-        )
-            ->toArray();
+        $period = CarbonPeriod::create($opening, '1 hour', $closing)->toArray();
 
         while($i < count($period) - 1) {
             $times[] = [
@@ -133,8 +135,35 @@ class SchedulesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Schedules $schedules)
+    public function destroy($id)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $id = Schedules::find($id);
+            $id->delete();
+            DB::commit();
+
+            return redirect()->route('schedules.index')->with('success', 'Schedule deleted successfully');
+        }
+        catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('An error occurred while deleting the schedule', ['error' => $e->getMessage()]);
+
+            return redirect()->route('schedules.index')->with('error', 'An error occurred while deleting the schedule');
+        }
+    }
+
+    public function showJson($id)
+    {
+        try {
+            $schedule = Schedules::find($id);
+            $date = DateUtil::translateDateToDayOfWeek(Carbon::parse($schedule->date)->locale('es_ES'));
+
+            return response()->json(['date' => $date]);
+        }
+        catch (\Exception $e) {
+            Log::error('An error occurred while deleting the schedule', ['error' => $e->getMessage()]);
+            return response()->noContent();
+        }
     }
 }

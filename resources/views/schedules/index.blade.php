@@ -148,14 +148,10 @@ use Carbon\Carbon;
                                             {{ Carbon::parse($schedule->closing_time)->subHour()->locale('es_ES')->format('h:i A') }}
                                         </td>
                                         <td>
-                                            <a href="{{ route('teams.show', Vinkla\Hashids\Facades\Hashids::encode($schedule->id)) }}"
-                                               class="btn btn-outline-success">
-                                                <i class="ti ti-eye btn-icon-prepend"></i>
-                                            </a>
                                             @if(Auth::user()->rol_id === 1)
                                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                        data-bs-target="#deleteTeam"
-                                                        onclick="deleteTeam({{$schedule->id}})">
+                                                        data-bs-target="#deleteSchedule"
+                                                        onclick="deleteSchedule({{$schedule->id}})">
                                                     <i class="ti ti-trash-x btn-icon-prepend"></i>
                                                 </button>
                                             @endif
@@ -166,52 +162,14 @@ use Carbon\Carbon;
                             </table>
                         </div>
                     @endif
-                    @if(Auth::user()->rol_id !== 1)
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>{{ __('Team') }}</th>
-                                    <th>{{ __('Players') }}</th>
-                                    <th>{{ __('Actions') }}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($teams as $team)
-                                    <tr>
-                                        <td class="align-content-center">
-                                            <h4 class="font-weight-medium">{{ $loop->index + 1 }}</h4>
-                                        </td>
-                                        <td class="d-flex align-items-center">
-                                            <img src="{{ asset('storage/'.$team->logo)}}" alt="{{$team->name}}"
-                                                 class="rounded"
-                                                 style="width: 3rem !important; margin-right: 1rem !important;">
-                                            <h2 class="font-weight-medium text-center">{{ $team->name }}</h2>
-                                        </td>
-                                        <td class="align-items-center">
-                                            {{ $team->players->count() }}
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('teams.show', Vinkla\Hashids\Facades\Hashids::encode($team->id)) }}"
-                                               class="btn btn-outline-success">
-                                                <i class="ti ti-eye btn-icon-prepend"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
                 </div>
                 @if(Auth::user()->rol_id === 1)
-                    <div class="modal fade" id="deleteTeam" tabindex="-1"
+                    <div class="modal fade" id="deleteSchedule" tabindex="-1"
                          aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">{{ __('Delete Team') }}</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">{{ __('Delete Schedule') }}</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
@@ -228,7 +186,7 @@ use Carbon\Carbon;
                                                                 data-bs-dismiss="modal">{{ __('Cancel')}}
                                                         </button>
                                                         <button class="btn btn-danger"
-                                                                type="submit">{{ __('Delete Team') }}</button>
+                                                                type="submit">{{ __('Delete Schedule') }}</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -243,15 +201,15 @@ use Carbon\Carbon;
         </div>
         <script type="application/javascript">
             // hace una peticion ajax para obtener la informacion de la moto
-            function deleteTeam(id) {
+            function deleteSchedule(id) {
                 let form = document.getElementById('deleteForm')
-                form.action = route('teams.delete', id)
+                form.action = route('schedules.delete', id)
                 $.ajax({
-                    url: route('teams.json', id),
+                    url: route('schedules.json', id),
                     type: 'GET',
                     success: function (response) {
-                        // console.log(response.name)
-                        $('#banner').html(`{{__('Are you sure you want to delete this record?')}}` + ' ' + response.name);
+                        console.log(response)
+                        $('#banner').html(`{{__('Are you sure you want to delete this record?')}}` + ' ' + response.date);
                     }
                 })
             }
