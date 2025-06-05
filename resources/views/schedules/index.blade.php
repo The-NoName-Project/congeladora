@@ -208,7 +208,6 @@ use Carbon\Carbon;
                     url: route('schedules.json', id),
                     type: 'GET',
                     success: function (response) {
-                        console.log(response)
                         $('#banner').html(`{{__('Are you sure you want to delete this record?')}}` + ' ' + response.date);
                     }
                 })
