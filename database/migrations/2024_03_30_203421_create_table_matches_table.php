@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('table_matches', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('team_id')->constrained('teams');
+            $table->foreignId('team_id')->unique()->constrained('teams');
             $table->integer('matches');
             $table->integer('wins');
             $table->integer('losses');
