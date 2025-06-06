@@ -12,7 +12,9 @@ Route::get('/', function () {
         return redirect()->route('dashboard');
     }
     $soccer = SoccerMatches::with('home_team', 'away_team', 'referee')->thisWeek()->where('played', false)->get();
-    return view('welcome', compact('soccer'));
+    $played_games = SoccerMatches::with('home_team', 'away_team', 'referee')->thisWeek()->where('played', true)->get();
+
+    return view('welcome', compact('soccer', 'played_games'));
 })->name('home')->middleware('set_language');
 
 Route::get('/dashboard', function () {

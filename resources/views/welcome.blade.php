@@ -11,6 +11,7 @@ use Carbon\Carbon;
 @section('content')
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card mt-3">
+            @if(count($soccer) > 0)
             <div class="card">
                 <div class="card-body mt-auto">
                     <div class="row">
@@ -43,6 +44,50 @@ use Carbon\Carbon;
                     </div>
                 </div>
             </div>
+            @endif
+            @if (count($played_games) > 0)
+                <div class="card">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="rounded pt-4 pb-3 rounded-top">
+                            <h3 class="text-capitalize ps-3 font-weight-medium text-center">{{ __('List of Soccer Matches Played') }}</h3>
+                        </div>
+                    </div>
+                    <div class="card-body mt-auto">
+                        <div class="row">
+                            @foreach($played_games as $played)
+                                <a href="{{ route('matches.show', Vinkla\Hashids\Facades\Hashids::encode($played->id) ) }}"
+                                   style="text-decoration: none; color: #0e1014"
+                                   class="col-md-4"
+                                >
+                                    <div class="card d-flex align-items-center bg-primary-subtle">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="text-center ml-lg-2" style="margin-right: 20px">
+                                                    <img src="{{ asset('storage/'.$played->home_team->logo)}}"
+                                                         alt="{{$played->home_team->name}}" width="100" height="100"
+                                                         class="rounded-full"/>
+                                                    <p class="text-2xl font-bold text-capitalize">{{ $played->home_team->name }}</p>
+                                                    <h3>{{ $played->home_team_goals }}</h3>
+                                                </div>
+                                                <div class="text-center">
+                                                    <p class="font-weight-medium">VS</p>
+                                                </div>
+                                                <div class="text-center mr-lg-2" style="margin-left: 20px">
+                                                    <img src="{{ asset('storage/'.$played->away_team->logo)}}"
+                                                         alt="{{$played->away_team->name}}" width="100" height="100"
+                                                         class="rounded-full"/>
+                                                    <p class="text-2xl font-bold text-capitalize">{{ $played->away_team->name }}</p>
+                                                    <h3>{{ $played->away_team_goals }}</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 @endsection
