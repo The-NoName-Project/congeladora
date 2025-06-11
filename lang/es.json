@@ -315,5 +315,12 @@
     "Starting Time": "Horario de Juego",
     "Match Date": "Dia de Juego",
     "Language": "Idioma",
-    "No users with new pictures found": "No se encontraron usuarios con foto nueva"
+    "No users with new pictures found": "No se encontraron usuarios con foto nueva",
+    "Matches": "Partidos",
+    "Losses": "Perdidos",
+    "Draws": "Empatados",
+    "Goals Against": "Goles en Contra",
+    "Goal Difference": "Diferencia de Goles",
+    "Restart Season": "Reiniciar Temporada",
+    "Are you sure you want to restart this season?": "¿Estas seguro de reiniciar esta temporada?"
 }

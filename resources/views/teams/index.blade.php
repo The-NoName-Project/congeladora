@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <div class="card-body mt-auto">
-                    @if(Auth::user()->rol_id === 1)
+                    @if(Auth::user()->rol_id === 1 or Auth::user() === 2)
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
@@ -112,7 +112,7 @@
                                 @foreach($teams as $team)
                                     <tr>
                                         <td class="align-content-center">
-                                            <h4 class="font-weight-medium">{{ $loop->index + $teams->firstItem() }}</h4>
+                                            <h4 class="font-weight-medium">{{ $loop->index + 1}}</h4>
                                         </td>
                                         <td class="d-flex align-items-center">
                                             <img src="{{ asset('storage/'.$team->logo)}}" alt="{{$team->name}}"

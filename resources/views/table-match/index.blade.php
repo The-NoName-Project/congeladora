@@ -10,6 +10,50 @@
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
                         <h3 class="text-capitalize ps-3 font-weight-medium ml-lg-4">{{ __('Table Matches') }}</h3>
+                        @if(Auth::check() && Auth::user()->rol_id == 1)
+                            <div class="d-flex justify-content-end align-items-end mr-lg-5">
+                                <button type="button" class="btn btn-outline-light btn-icon-text"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#restartSeason">
+                                    <i class="ti ti-plus btn-icon-prepend"></i>
+                                </button>
+
+                                <div class="modal fade" id="restartSeason" tabindex="-1" aria-labelledby="restartSeasonLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h3 class="modal-title fs-5"
+                                                    id="exampleModalLabel">{{ __('Restart Season') }}</h3>
+                                                <button type="button" class="btn btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close">
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="container">
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-md-12">
+                                                            <form action="{{ route('matches.restart_league', 1) }}" method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <p id="banner">{{ __('Are you sure you want to restart this season?') }}</p>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-secondary" type="button"
+                                                                            data-bs-dismiss="modal">{{ __('Cancel')}}
+                                                                    </button>
+                                                                    <button class="btn btn-danger"
+                                                                            type="submit">{{ __('Restart Season') }}</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="card-body mt-auto">

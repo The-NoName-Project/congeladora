@@ -55,6 +55,8 @@ Route::middleware(['auth', 'set_language'])->group(function () {
     Route::post('/soccer-matches/{id}/create-goals', [SoccerMatchesController::class, 'addGoalsTeam'])->name('matches.team_goals');
     Route::get('/soccer-matches/{id}/goals', [SoccerMatchesController::class, 'goals'])->name('matches.goals');
 
+    Route::delete('/table-matches/{id}/reset-season', [TableMatchesController::class, 'restart_league'])->name('matches.restart_league')->middleware('block_user');
+
     Route::get('/storage/{image}', function ($image) {
         $url = env('APP_URL');
         return $url . '/storage/' . $image;
@@ -65,11 +67,11 @@ Route::middleware(['auth', 'set_language'])->group(function () {
 });
 
 
-Route::get('/soccer-matches/{id}', [SoccerMatchesController::class, 'show'])->name('matches.show');
-Route::get('/table-matches', [TableMatchesController::class, 'index'])->name('table-matches.index');
-Route::get('/matches', [SoccerMatchesController::class, 'index'])->name('matches-without.index');
-Route::get('/teams/{code}/code', [TeamsController::class, 'findUserCodeValid'])->name('teams.code');
-Route::get('/calendar', [SoccerMatchesController::class, 'calendarSoccer'])->name('matches.calendar');
+Route::get('/soccer-matches/{id}', [SoccerMatchesController::class, 'show'])->name('matches.show')->middleware('set_language');
+Route::get('/table-matches', [TableMatchesController::class, 'index'])->name('table-matches.index')->middleware('set_language');
+Route::get('/matches', [SoccerMatchesController::class, 'index'])->name('matches-without.index')->middleware('set_language');
+Route::get('/teams/{code}/code', [TeamsController::class, 'findUserCodeValid'])->name('teams.code')->middleware('set_language');
+Route::get('/calendar', [SoccerMatchesController::class, 'calendarSoccer'])->name('matches.calendar')->middleware('set_language');
 
 Route::get('/language/{locale}', function (string $locale) {
     $availableLocales = ['en', 'es']; // Agrega los que necesites

@@ -195,6 +195,7 @@ class TeamsController extends Controller
             $team = Teams::find($id);
             TableMatch::where('team_id', $team->id)->delete();
             TeamUserCodes::where('team_id', $team->id)->delete();
+            UserTeam::where('team_id', $team->id)->delete();
             Storage::delete('public/'.$team->logo);
             $team->delete();
 

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('goal_difference');
             $table->integer('goals_against');
             $table->foreignId('category_id')->constrained('categories');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

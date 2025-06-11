@@ -66,4 +66,9 @@ class Teams extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function table_matches(): BelongsTo
+    {
+        return $this->belongsTo(TableMatch::class, 'team_id');
+    }
 }

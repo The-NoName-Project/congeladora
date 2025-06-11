@@ -221,7 +221,7 @@ class SoccerMatchesController extends Controller
                 // Si hay un empate, sumarle 1 punto a cada equipo
                 $local = TableMatch::where('team_id', $id->home_team_id)->first();
                 $local->points += 1;
-                $local->draw += 1;
+                $local->draws += 1;
                 $local->goals_for = $local->goals_for += $request->home_team_goals;
                 $local->goals_against = $local->goals_against += $request->away_team_goals;
                 $local->goal_difference = $local->goals_for - $local->goals_against;
@@ -229,10 +229,10 @@ class SoccerMatchesController extends Controller
 
                 $visitante = TableMatch::where('team_id', $id->away_team_id)->first();
                 $visitante->points += 1;
-                $visitante->draw += 1;
+                $visitante->draws += 1;
                 $visitante->goals_for = $visitante->goals_for += $request->away_team_goals;
                 $visitante->goals_against = $visitante->goals_against += $request->home_team_goals;
-                $visitante->goals_difference = $visitante->goals_for - $visitante->goals_against;
+                $visitante->goal_difference = $visitante->goals_for - $visitante->goals_against;
                 $visitante->save();
         }
             // Si hay un ganador, sumarle 3 puntos
